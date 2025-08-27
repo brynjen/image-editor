@@ -1,0 +1,40 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+
+# Project description
+Should allow user to drag and drop images, enter text and hit a button for process so that it sends the image and text to an image llm like qwen3-image-edit running in the background.
+- Drag and drop image into a rectangle
+- Has a dropbox list of all image handlers, like qwen3-image-edit, nano-banana and others
+- Has an input field for text where user enters what they want the processor to do with the image
+- Has a separate box for the input image, along with a progress bar while processing
+- Uses serverpod for backend
+
+# General Coding Guidelines
+- Use Flutter for all frontend components.
+- Use dart/Serverpod for all backend components.
+- Never more than one class per file
+- Use comments sparingly - only for complex logic. Attach comments to function or class, never inside method.
+- Prioritize readability and maintainability.
+- Use english for all comments and all naming
+- Follow Single Responsibility when creating
+- Requests to refactorize something means
+    * Remove unneded code - be careful when doing so, check references
+    * Simplify and remove duplicates
+    * Split into different files depending on needs
+    * Ensuring documentation explains what a function or class is needed for
+- All comments added should be informative outside of the obvious a function or class does defined by its name
+- Any changes to a function should lead to corresponding confirmation and check of its comments so the function comments are not out of date
+- Never change tests to fix a problem when they fail
+- DRY - Don't Repeat Yourself. Never create duplicated methods or functions or classes. Look for existing versions when creating a new class
+- linter errors and deprecations should be resolved for code to be valid
+- File structure should follow the folder convention
+    * domain/repository - contracts and interfaces
+    * domain/model - entities and business logic objects
+    * data/repository - contract implementations
+    * data/dto - response objects and network objects (only for server, client response objects are defined by serverpod client)
+    * presentation/screen - Screen level widgets
+    * presentation/bloc - blocs and similar states
+    * presentation/widget - all simple or complex widgets used in screens
