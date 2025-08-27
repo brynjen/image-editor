@@ -62,9 +62,11 @@ async def startup_event():
         # Get configuration from environment variables
         model_name = os.getenv("MODEL_NAME", "Qwen/Qwen-Image-Edit")
         device = os.getenv("DEVICE", "auto")
+        cpu_offload = os.getenv("CPU_OFFLOAD", "true").lower() == "true"
         
-        logger.info(f"Initializing model: {model_name} on {device}")
-        model_handler = QwenImageEditHandler(model_name=model_name, device=device)
+        logger.info(f"Initializing DFloat11 compressed model: {model_name} on {device}")
+        logger.info(f"CPU offloading enabled: {cpu_offload}")
+        model_handler = QwenImageEditHandler(model_name=model_name, device=device, cpu_offload=cpu_offload)
         
         logger.info("Qwen Image Edit service started successfully")
         

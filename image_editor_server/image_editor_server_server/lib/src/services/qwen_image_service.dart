@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
-import 'package:serverpod/serverpod.dart';
 
 /// Service for communicating with the Qwen Image Edit Docker container
 class QwenImageService {

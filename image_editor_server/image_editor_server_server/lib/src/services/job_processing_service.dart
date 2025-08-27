@@ -146,7 +146,6 @@ class JobProcessingService {
       // Save processed image
       final processedImageBytes = base64Decode(result.processedImageBase64!);
       final timestamp = DateTime.now().millisecondsSinceEpoch;
-      final extension = imageData.filename.split('.').last;
       final processedFilename = '${timestamp}_processed_${imageData.filename}';
 
       final processedFile = File('storage/images/$processedFilename');

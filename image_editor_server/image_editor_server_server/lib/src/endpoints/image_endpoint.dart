@@ -241,7 +241,6 @@ class ImageEndpoint extends Endpoint {
       
       // Generate processed filename
       final timestamp = DateTime.now().millisecondsSinceEpoch;
-      final extension = imageData.filename.split('.').last;
       final processedFilename = '${timestamp}_processed_${imageData.filename}';
 
       // Save the processed image

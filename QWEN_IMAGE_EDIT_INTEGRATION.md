@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document outlines the implementation plan for integrating qwen-image-edit (or qwen2-vl-7b-instruct) as a local Docker service that communicates with our Serverpod backend. The goal is to enable real-time AI-powered image editing through our existing Flutter frontend.
+This document outlines the implementation plan for integrating **DFloat11 compressed Qwen-Image-Edit** as a local Docker service that communicates with our Serverpod backend. The DFloat11 compression reduces the model size by **32%** (from 41GB to 28GB) while maintaining 100% accuracy, making it suitable for consumer hardware with 24-32GB RAM.
 
 ## Architecture
 
@@ -29,6 +29,30 @@ Flutter App → Serverpod Backend → qwen-image-edit Docker Container → Proce
 - Serverpod stores processed image and returns processed image URL
 - Client displays the processed result
 
+## DFloat11 Compressed Model
+
+### Key Benefits
+- **32% smaller**: 28.43GB vs 41GB original model
+- **100% accuracy**: Bit-identical outputs to original model  
+- **Memory efficient**: Can run on 24GB GPU with CPU offloading or 32GB GPU
+- **Lossless compression**: Uses Huffman coding on BFloat16 exponent bits
+- **Fast inference**: On-the-fly GPU decompression via CUDA kernels
+
+### System Requirements
+| Configuration | GPU Memory | CPU Memory | Generation Time |
+|---------------|------------|------------|----------------|
+| GPU Only | 32GB | 16GB+ | ~280 seconds |
+| GPU + CPU Offloading | 24GB | 50GB+ | ~570 seconds |
+
+### Model Components
+- **Base Model**: `Qwen/Qwen-Image-Edit` (config and pipeline components)
+- **Compressed Weights**: `DFloat11/Qwen-Image-Edit-DF11` (compressed transformer weights)
+
+### Download Scripts
+- **`monitor-dfloat11-download.sh`**: All-in-one download, monitoring, and testing script
+- **`check-dfloat11-status.sh`**: Quick status check for download progress
+- **Persistent Storage**: Models stored in `qwen-models-cache/` directory (mapped to Docker volume)
+
 ## Implementation Tasks
 
 ### Phase 1: Docker Container Setup
@@ -40,11 +64,12 @@ Flutter App → Serverpod Backend → qwen-image-edit Docker Container → Proce
 Create a Python-based Docker container that runs qwen-image-edit model locally.
 
 **Requirements**:
-- Python 3.10+ with PyTorch and transformers
-- qwen2-vl-7b-instruct model (or qwen-image-edit if available)
+- Python 3.10+ with PyTorch, transformers, and diffusers
+- **DFloat11 compressed Qwen-Image-Edit model** (28GB vs 41GB original)
+- dfloat11 package for efficient compressed model loading
 - FastAPI web server for HTTP endpoints
-- Image processing capabilities (PIL, OpenCV)
-- GPU support (optional, but recommended for performance)
+- Image processing capabilities (PIL, torchvision)
+- CPU offloading support for reduced memory usage (24GB GPU + 50GB RAM or 32GB GPU)
 
 **Deliverables**:
 - `qwen-image-edit/Dockerfile`
@@ -533,22 +558,46 @@ qwen-image-edit:
 
 ### 🔄 Current Status
 
-The system now has complete async processing capabilities:
-- **Docker Container**: ✅ Built and running with persistent model storage
-- **Model Loading**: 🔄 Qwen-Image-Edit model downloading to persistent storage (~54GB total)
+The system has been updated to use the **DFloat11 compressed model** which is much more suitable for consumer hardware:
+- **Docker Container**: ✅ Built with DFloat11 support and persistent model storage
+- **Model Selection**: ✅ Updated to use DFloat11/Qwen-Image-Edit-DF11 (28GB vs 41GB original)
+- **Dependencies**: ✅ Added dfloat11[cuda12], torchvision, latest diffusers
+- **Memory Optimization**: ✅ CPU offloading support for 24GB GPU + 50GB RAM systems
+- **Download Scripts**: ✅ Created download-dfloat11-model.py and monitoring script
 - **Persistent Storage**: ✅ Models stored in `qwen-models-cache/` folder (survives container restarts)
 - **Serverpod Integration**: ✅ Ready and configured with async job system
 - **API Endpoints**: ✅ Implemented and tested (both sync and async)
 - **Job Management**: ✅ Full async job system with background processing
 - **Database**: ✅ Updated with processing_jobs table
 
-### 📊 Model Download Progress
+### 📊 DFloat11 Model Download
 
-The Qwen-Image-Edit model is approximately **54GB** in size and requires significant download time. 
+The **DFloat11 compressed Qwen-Image-Edit model** is approximately **28GB** in size (32% smaller than the original 41GB model). 
 
-**Monitor download progress:**
+**Download and monitor the model (run from project root):**
+
+**🌙 Overnight Download (Recommended):**
 ```bash
-./monitor-model-download.sh
+# From project root directory (/path/to/image-editor)
+# Optimized for overnight download - efficient monitoring, comprehensive logging
+./monitor-dfloat11-download.sh
+
+# Or run in background with nohup for complete hands-off operation:
+nohup ./monitor-dfloat11-download.sh > overnight_download.log 2>&1 &
+```
+
+**Key Features:**
+- ✅ **Comprehensive Download**: Ensures both base model AND DFloat11 compressed weights are downloaded
+- ✅ **Bandwidth Efficient**: Uses 60-second intervals for overnight monitoring  
+- ✅ **Detailed Logging**: Creates `dfloat11_download.log` with timestamped progress
+- ✅ **Graceful Cleanup**: Handles interruptions cleanly
+- ✅ **Auto-Testing**: Automatically tests the model when download completes
+- ✅ **Resume Support**: Can resume interrupted downloads
+
+**Quick Status Check:**
+```bash
+# Check current download status anytime
+./check-dfloat11-status.sh
 ```
 
 **Current setup:**
