@@ -493,7 +493,7 @@ qwen-image-edit:
 
 ## Resources
 
-- [Qwen2-VL Documentation](https://huggingface.co/Qwen/Qwen2-VL-7B-Instruct)
+- [Qwen ImageEdit Documentation](https://huggingface.co/Qwen/Qwen-Image-Edit)
 - [Serverpod Documentation](https://docs.serverpod.dev)
 - [Docker Compose Documentation](https://docs.docker.com/compose/)
 - [FastAPI Documentation](https://fastapi.tiangolo.com/)
