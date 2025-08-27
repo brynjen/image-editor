@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 import 'package:serverpod/serverpod.dart';
 import '../generated/protocol.dart';
 
@@ -131,7 +130,6 @@ class ImageEndpoint extends Endpoint {
 
       // Generate processed filename
       final timestamp = DateTime.now().millisecondsSinceEpoch;
-      final extension = imageData.filename.split('.').last;
       final processedFilename = '${timestamp}_processed_${imageData.filename}';
 
       // For now, just copy the original (simulate processing)
