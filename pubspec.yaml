@@ -18,6 +18,11 @@ dependencies:
   window_manager: ^0.5.1
   flutter_bloc: ^9.1.1
   equatable: ^2.0.7
+  serverpod_client: ^2.9.1
+  http: ^1.5.0
+  path: ^1.9.0
+  image_editor_server_client:
+    path: ./image_editor_server/image_editor_server_client
 
 dev_dependencies:
   flutter_test:

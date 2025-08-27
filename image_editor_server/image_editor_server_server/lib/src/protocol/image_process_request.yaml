@@ -1,0 +1,5 @@
+class: ImageProcessRequest
+fields:
+  imageId: int
+  processorType: String
+  instructions: String

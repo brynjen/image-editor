@@ -1,0 +1,13 @@
+class: ImageData
+table: image_data
+fields:
+  id: int?, defaultPersist=serial
+  filename: String
+  originalName: String
+  mimeType: String
+  size: int
+  uploadedAt: DateTime, default=now
+  processorType: String?
+  instructions: String?
+  processedAt: DateTime?
+  processedFilename: String?

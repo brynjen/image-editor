@@ -1,0 +1,1320 @@
+SERVERPOD version: 2.9.1, dart: 3.9.0 (stable) (Mon Aug 11 07:58:10 2025 -0700) on "macos_arm64", time: 2025-08-27 14:14:28.602088Z
+runMode: development
+serverId: default
+role: monolith
+loggingMode: normal
+applyMigrations: true
+applyRepairMigration: false
+SERVERPOD initialized, time: 2025-08-27 14:14:28.644367Z
+Latest database migration already applied.
+Insights listening on port 8081
+Server default listening on port 8080
+2025-08-27 14:14:29.507943Z WebServer  INFO: Webserver listening on port 8082
+TIME                        ID         TYPE           CONTEXT                  DETAILS
+--------------------------- ---------- -------------- ------------------------ ------------------------------
+2025-08-27 14:14:39.526201Z  593872793 LOG            INFO                     message=Hello! Remember to send a birthday card!
+2025-08-27 14:14:39.527060Z  593872793 FUTURE         birthdayReminder         queries=0, duration=8µs
+2025-08-27 14:15:03.141542Z  308648209 METHOD         greeting.hello           user=null, queries=0, duration=1µs
+2025-08-27 14:20:50.898449Z Internal server error. Failed to connect to database in future call manager.
+DatabaseQueryException: { message: The underlying socket to Postgres has been closed unexpectedly. }
+#0      _PgSessionBase._sendAndWaitForQuery (package:postgres/src/v3/connection.dart:87:30)
+#1      _PgSessionBase._prepare (package:postgres/src/v3/connection.dart:195:11)
+#2      _PgSessionBase.execute (package:postgres/src/v3/connection.dart:171:30)
+#3      _PoolConnection.execute (package:postgres/src/pool/pool_impl.dart:298:24)
+#4      PoolImplementation.execute.<anonymous closure> (package:postgres/src/pool/pool_impl.dart:63:54)
+#5      PoolImplementation.withConnection (package:postgres/src/pool/pool_impl.dart:153:24)
+<asynchronous suspension>
+#6      DatabaseConnection._query (package:serverpod/src/database/adapters/postgres/database_connection.dart:385:20)
+<asynchronous suspension>
+#7      DatabaseConnection._mappedResultsQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:482:18)
+<asynchronous suspension>
+#8      DatabaseConnection._deserializedMappedQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:515:18)
+<asynchronous suspension>
+#9      DatabaseConnection.deleteWhere (package:serverpod/src/database/adapters/postgres/database_connection.dart:291:12)
+<asynchronous suspension>
+#10     FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:71:23)
+<asynchronous suspension>
+
+Local stacktrace:
+#0      FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:94:36)
+<asynchronous suspension>
+
+2025-08-27 14:20:54.530005Z Internal server error. Failed to connect to database in future call manager.
+SocketException: Connection refused (OS Error: Connection refused, errno = 61), address = localhost, port = 59024
+#0      _NativeSocket.startConnect (dart:io-patch/socket_patch.dart:821:35)
+#1      _NativeSocket.connect (dart:io-patch/socket_patch.dart:1146:12)
+#2      _RawSocket.connect (dart:io-patch/socket_patch.dart:2275:26)
+#3      RawSocket.connect (dart:io-patch/socket_patch.dart:31:23)
+#4      Socket._connect (dart:io-patch/socket_patch.dart:2564:22)
+#5      Socket.connect (dart:io/socket.dart:869:21)
+#6      PgConnectionImplementation._connect (package:postgres/src/v3/connection.dart:278:31)
+#7      PgConnectionImplementation.connect (package:postgres/src/v3/connection.dart:222:35)
+#8      PoolImplementation._selectOrCreate.<anonymous closure> (package:postgres/src/pool/pool_impl.dart:205:42)
+#9      PackagePoolExt.withRequestTimeout (package:postgres/src/utils/package_pool_ext.dart:54:28)
+<asynchronous suspension>
+#10     PoolImplementation._selectOrCreate (package:postgres/src/pool/pool_impl.dart:188:12)
+<asynchronous suspension>
+#11     PoolImplementation.withConnection (package:postgres/src/pool/pool_impl.dart:146:20)
+<asynchronous suspension>
+#12     DatabaseConnection._query (package:serverpod/src/database/adapters/postgres/database_connection.dart:385:20)
+<asynchronous suspension>
+#13     DatabaseConnection._mappedResultsQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:482:18)
+<asynchronous suspension>
+#14     DatabaseConnection._deserializedMappedQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:515:18)
+<asynchronous suspension>
+#15     DatabaseConnection.deleteWhere (package:serverpod/src/database/adapters/postgres/database_connection.dart:291:12)
+<asynchronous suspension>
+#16     FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:71:23)
+<asynchronous suspension>
+
+Local stacktrace:
+#0      FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:94:36)
+<asynchronous suspension>
+
+2025-08-27 14:20:58.044908Z ERROR: Failed to reload runtime settings.
+2025-08-27 14:20:58.044908Z ERROR: SocketException: Connection refused (OS Error: Connection refused, errno = 61), address = localhost, port = 59036
+#0      _NativeSocket.startConnect (dart:io-patch/socket_patch.dart:821:35)
+#1      _NativeSocket.connect (dart:io-patch/socket_patch.dart:1146:12)
+#2      _RawSocket.connect (dart:io-patch/socket_patch.dart:2275:26)
+#3      RawSocket.connect (dart:io-patch/socket_patch.dart:31:23)
+#4      Socket._connect (dart:io-patch/socket_patch.dart:2564:22)
+#5      Socket.connect (dart:io/socket.dart:869:21)
+#6      PgConnectionImplementation._connect (package:postgres/src/v3/connection.dart:278:31)
+#7      PgConnectionImplementation.connect (package:postgres/src/v3/connection.dart:222:35)
+#8      PoolImplementation._selectOrCreate.<anonymous closure> (package:postgres/src/pool/pool_impl.dart:205:42)
+#9      PackagePoolExt.withRequestTimeout (package:postgres/src/utils/package_pool_ext.dart:54:28)
+<asynchronous suspension>
+#10     PoolImplementation._selectOrCreate (package:postgres/src/pool/pool_impl.dart:188:12)
+<asynchronous suspension>
+#11     PoolImplementation.withConnection (package:postgres/src/pool/pool_impl.dart:146:20)
+<asynchronous suspension>
+#12     DatabaseConnection._query (package:serverpod/src/database/adapters/postgres/database_connection.dart:385:20)
+<asynchronous suspension>
+#13     DatabaseConnection._mappedResultsQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:482:18)
+<asynchronous suspension>
+#14     DatabaseConnection._deserializedMappedQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:515:18)
+<asynchronous suspension>
+#15     DatabaseConnection.findFirstRow (package:serverpod/src/database/adapters/postgres/database_connection.dart:98:16)
+<asynchronous suspension>
+#16     Database.findFirstRow (package:serverpod/src/database/database.dart:97:12)
+<asynchronous suspension>
+#17     Serverpod.reloadRuntimeSettings (package:serverpod/src/server/serverpod.dart:277:11)
+<asynchronous suspension>
+#18     HealthCheckManager._innerPerformHealthCheck (package:serverpod/src/server/health_check_manager.dart:95:5)
+<asynchronous suspension>
+#19     HealthCheckManager._performHealthCheck (package:serverpod/src/server/health_check_manager.dart:57:7)
+<asynchronous suspension>
+
+2025-08-27 14:20:58.061048Z ERROR: Failed to cleanup closed sessions
+2025-08-27 14:20:58.061048Z ERROR: SocketException: Connection refused (OS Error: Connection refused, errno = 61), address = localhost, port = 59038
+#0      _NativeSocket.startConnect (dart:io-patch/socket_patch.dart:821:35)
+#1      _NativeSocket.connect (dart:io-patch/socket_patch.dart:1146:12)
+#2      _RawSocket.connect (dart:io-patch/socket_patch.dart:2275:26)
+#3      RawSocket.connect (dart:io-patch/socket_patch.dart:31:23)
+#4      Socket._connect (dart:io-patch/socket_patch.dart:2564:22)
+#5      Socket.connect (dart:io/socket.dart:869:21)
+#6      PgConnectionImplementation._connect (package:postgres/src/v3/connection.dart:278:31)
+#7      PgConnectionImplementation.connect (package:postgres/src/v3/connection.dart:222:35)
+#8      PoolImplementation._selectOrCreate.<anonymous closure> (package:postgres/src/pool/pool_impl.dart:205:42)
+#9      PackagePoolExt.withRequestTimeout (package:postgres/src/utils/package_pool_ext.dart:54:28)
+<asynchronous suspension>
+#10     PoolImplementation._selectOrCreate (package:postgres/src/pool/pool_impl.dart:188:12)
+<asynchronous suspension>
+#11     PoolImplementation.withConnection (package:postgres/src/pool/pool_impl.dart:146:20)
+<asynchronous suspension>
+#12     DatabaseConnection._query (package:serverpod/src/database/adapters/postgres/database_connection.dart:385:20)
+<asynchronous suspension>
+#13     DatabaseConnection.query (package:serverpod/src/database/adapters/postgres/database_connection.dart:354:18)
+<asynchronous suspension>
+#14     HealthCheckManager._cleanUpClosedSessions (package:serverpod/src/server/health_check_manager.dart:134:7)
+<asynchronous suspension>
+#15     HealthCheckManager._innerPerformHealthCheck (package:serverpod/src/server/health_check_manager.dart:97:5)
+<asynchronous suspension>
+#16     HealthCheckManager._performHealthCheck (package:serverpod/src/server/health_check_manager.dart:57:7)
+<asynchronous suspension>
+
+2025-08-27 14:20:58.077084Z ERROR: Failed to optimize health check data
+2025-08-27 14:20:58.077084Z ERROR: SocketException: Connection refused (OS Error: Connection refused, errno = 61), address = localhost, port = 59040
+#0      _NativeSocket.startConnect (dart:io-patch/socket_patch.dart:821:35)
+#1      _NativeSocket.connect (dart:io-patch/socket_patch.dart:1146:12)
+#2      _RawSocket.connect (dart:io-patch/socket_patch.dart:2275:26)
+#3      RawSocket.connect (dart:io-patch/socket_patch.dart:31:23)
+#4      Socket._connect (dart:io-patch/socket_patch.dart:2564:22)
+#5      Socket.connect (dart:io/socket.dart:869:21)
+#6      PgConnectionImplementation._connect (package:postgres/src/v3/connection.dart:278:31)
+#7      PgConnectionImplementation.connect (package:postgres/src/v3/connection.dart:222:35)
+#8      PoolImplementation._selectOrCreate.<anonymous closure> (package:postgres/src/pool/pool_impl.dart:205:42)
+#9      PackagePoolExt.withRequestTimeout (package:postgres/src/utils/package_pool_ext.dart:54:28)
+<asynchronous suspension>
+#10     PoolImplementation._selectOrCreate (package:postgres/src/pool/pool_impl.dart:188:12)
+<asynchronous suspension>
+#11     PoolImplementation.withConnection (package:postgres/src/pool/pool_impl.dart:146:20)
+<asynchronous suspension>
+#12     DatabaseConnection._query (package:serverpod/src/database/adapters/postgres/database_connection.dart:385:20)
+<asynchronous suspension>
+#13     DatabaseConnection._mappedResultsQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:482:18)
+<asynchronous suspension>
+#14     DatabaseConnection._deserializedMappedQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:515:18)
+<asynchronous suspension>
+#15     HealthCheckManager._optimizeConnectionInfoEntries (package:serverpod/src/server/health_check_manager.dart:206:19)
+<asynchronous suspension>
+#16     HealthCheckManager._optimizeHealthCheckData (package:serverpod/src/server/health_check_manager.dart:153:32)
+<asynchronous suspension>
+#17     HealthCheckManager._innerPerformHealthCheck (package:serverpod/src/server/health_check_manager.dart:99:5)
+<asynchronous suspension>
+#18     HealthCheckManager._performHealthCheck (package:serverpod/src/server/health_check_manager.dart:57:7)
+<asynchronous suspension>
+
+2025-08-27 14:20:59.524367Z Internal server error. Failed to connect to database in future call manager.
+SocketException: Connection refused (OS Error: Connection refused, errno = 61), address = localhost, port = 59047
+#0      _NativeSocket.startConnect (dart:io-patch/socket_patch.dart:821:35)
+#1      _NativeSocket.connect (dart:io-patch/socket_patch.dart:1146:12)
+#2      _RawSocket.connect (dart:io-patch/socket_patch.dart:2275:26)
+#3      RawSocket.connect (dart:io-patch/socket_patch.dart:31:23)
+#4      Socket._connect (dart:io-patch/socket_patch.dart:2564:22)
+#5      Socket.connect (dart:io/socket.dart:869:21)
+#6      PgConnectionImplementation._connect (package:postgres/src/v3/connection.dart:278:31)
+#7      PgConnectionImplementation.connect (package:postgres/src/v3/connection.dart:222:35)
+#8      PoolImplementation._selectOrCreate.<anonymous closure> (package:postgres/src/pool/pool_impl.dart:205:42)
+#9      PackagePoolExt.withRequestTimeout (package:postgres/src/utils/package_pool_ext.dart:54:28)
+<asynchronous suspension>
+#10     PoolImplementation._selectOrCreate (package:postgres/src/pool/pool_impl.dart:188:12)
+<asynchronous suspension>
+#11     PoolImplementation.withConnection (package:postgres/src/pool/pool_impl.dart:146:20)
+<asynchronous suspension>
+#12     DatabaseConnection._query (package:serverpod/src/database/adapters/postgres/database_connection.dart:385:20)
+<asynchronous suspension>
+#13     DatabaseConnection._mappedResultsQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:482:18)
+<asynchronous suspension>
+#14     DatabaseConnection._deserializedMappedQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:515:18)
+<asynchronous suspension>
+#15     DatabaseConnection.deleteWhere (package:serverpod/src/database/adapters/postgres/database_connection.dart:291:12)
+<asynchronous suspension>
+#16     FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:71:23)
+<asynchronous suspension>
+
+Local stacktrace:
+#0      FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:94:36)
+<asynchronous suspension>
+
+2025-08-27 14:21:04.529214Z Internal server error. Failed to connect to database in future call manager.
+SocketException: Connection refused (OS Error: Connection refused, errno = 61), address = localhost, port = 59278
+#0      _NativeSocket.startConnect (dart:io-patch/socket_patch.dart:821:35)
+#1      _NativeSocket.connect (dart:io-patch/socket_patch.dart:1146:12)
+#2      _RawSocket.connect (dart:io-patch/socket_patch.dart:2275:26)
+#3      RawSocket.connect (dart:io-patch/socket_patch.dart:31:23)
+#4      Socket._connect (dart:io-patch/socket_patch.dart:2564:22)
+#5      Socket.connect (dart:io/socket.dart:869:21)
+#6      PgConnectionImplementation._connect (package:postgres/src/v3/connection.dart:278:31)
+#7      PgConnectionImplementation.connect (package:postgres/src/v3/connection.dart:222:35)
+#8      PoolImplementation._selectOrCreate.<anonymous closure> (package:postgres/src/pool/pool_impl.dart:205:42)
+#9      PackagePoolExt.withRequestTimeout (package:postgres/src/utils/package_pool_ext.dart:54:28)
+<asynchronous suspension>
+#10     PoolImplementation._selectOrCreate (package:postgres/src/pool/pool_impl.dart:188:12)
+<asynchronous suspension>
+#11     PoolImplementation.withConnection (package:postgres/src/pool/pool_impl.dart:146:20)
+<asynchronous suspension>
+#12     DatabaseConnection._query (package:serverpod/src/database/adapters/postgres/database_connection.dart:385:20)
+<asynchronous suspension>
+#13     DatabaseConnection._mappedResultsQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:482:18)
+<asynchronous suspension>
+#14     DatabaseConnection._deserializedMappedQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:515:18)
+<asynchronous suspension>
+#15     DatabaseConnection.deleteWhere (package:serverpod/src/database/adapters/postgres/database_connection.dart:291:12)
+<asynchronous suspension>
+#16     FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:71:23)
+<asynchronous suspension>
+
+Local stacktrace:
+#0      FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:94:36)
+<asynchronous suspension>
+
+2025-08-27 14:21:09.524969Z Internal server error. Failed to connect to database in future call manager.
+SocketException: Connection refused (OS Error: Connection refused, errno = 61), address = localhost, port = 59290
+#0      _NativeSocket.startConnect (dart:io-patch/socket_patch.dart:821:35)
+#1      _NativeSocket.connect (dart:io-patch/socket_patch.dart:1146:12)
+#2      _RawSocket.connect (dart:io-patch/socket_patch.dart:2275:26)
+#3      RawSocket.connect (dart:io-patch/socket_patch.dart:31:23)
+#4      Socket._connect (dart:io-patch/socket_patch.dart:2564:22)
+#5      Socket.connect (dart:io/socket.dart:869:21)
+#6      PgConnectionImplementation._connect (package:postgres/src/v3/connection.dart:278:31)
+#7      PgConnectionImplementation.connect (package:postgres/src/v3/connection.dart:222:35)
+#8      PoolImplementation._selectOrCreate.<anonymous closure> (package:postgres/src/pool/pool_impl.dart:205:42)
+#9      PackagePoolExt.withRequestTimeout (package:postgres/src/utils/package_pool_ext.dart:54:28)
+<asynchronous suspension>
+#10     PoolImplementation._selectOrCreate (package:postgres/src/pool/pool_impl.dart:188:12)
+<asynchronous suspension>
+#11     PoolImplementation.withConnection (package:postgres/src/pool/pool_impl.dart:146:20)
+<asynchronous suspension>
+#12     DatabaseConnection._query (package:serverpod/src/database/adapters/postgres/database_connection.dart:385:20)
+<asynchronous suspension>
+#13     DatabaseConnection._mappedResultsQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:482:18)
+<asynchronous suspension>
+#14     DatabaseConnection._deserializedMappedQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:515:18)
+<asynchronous suspension>
+#15     DatabaseConnection.deleteWhere (package:serverpod/src/database/adapters/postgres/database_connection.dart:291:12)
+<asynchronous suspension>
+#16     FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:71:23)
+<asynchronous suspension>
+
+Local stacktrace:
+#0      FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:94:36)
+<asynchronous suspension>
+
+2025-08-27 14:21:14.531793Z Internal server error. Failed to connect to database in future call manager.
+SocketException: Connection refused (OS Error: Connection refused, errno = 61), address = localhost, port = 59297
+#0      _NativeSocket.startConnect (dart:io-patch/socket_patch.dart:821:35)
+#1      _NativeSocket.connect (dart:io-patch/socket_patch.dart:1146:12)
+#2      _RawSocket.connect (dart:io-patch/socket_patch.dart:2275:26)
+#3      RawSocket.connect (dart:io-patch/socket_patch.dart:31:23)
+#4      Socket._connect (dart:io-patch/socket_patch.dart:2564:22)
+#5      Socket.connect (dart:io/socket.dart:869:21)
+#6      PgConnectionImplementation._connect (package:postgres/src/v3/connection.dart:278:31)
+#7      PgConnectionImplementation.connect (package:postgres/src/v3/connection.dart:222:35)
+#8      PoolImplementation._selectOrCreate.<anonymous closure> (package:postgres/src/pool/pool_impl.dart:205:42)
+#9      PackagePoolExt.withRequestTimeout (package:postgres/src/utils/package_pool_ext.dart:54:28)
+<asynchronous suspension>
+#10     PoolImplementation._selectOrCreate (package:postgres/src/pool/pool_impl.dart:188:12)
+<asynchronous suspension>
+#11     PoolImplementation.withConnection (package:postgres/src/pool/pool_impl.dart:146:20)
+<asynchronous suspension>
+#12     DatabaseConnection._query (package:serverpod/src/database/adapters/postgres/database_connection.dart:385:20)
+<asynchronous suspension>
+#13     DatabaseConnection._mappedResultsQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:482:18)
+<asynchronous suspension>
+#14     DatabaseConnection._deserializedMappedQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:515:18)
+<asynchronous suspension>
+#15     DatabaseConnection.deleteWhere (package:serverpod/src/database/adapters/postgres/database_connection.dart:291:12)
+<asynchronous suspension>
+#16     FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:71:23)
+<asynchronous suspension>
+
+Local stacktrace:
+#0      FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:94:36)
+<asynchronous suspension>
+
+2025-08-27 14:21:19.526410Z Internal server error. Failed to connect to database in future call manager.
+SocketException: Connection refused (OS Error: Connection refused, errno = 61), address = localhost, port = 59304
+#0      _NativeSocket.startConnect (dart:io-patch/socket_patch.dart:821:35)
+#1      _NativeSocket.connect (dart:io-patch/socket_patch.dart:1146:12)
+#2      _RawSocket.connect (dart:io-patch/socket_patch.dart:2275:26)
+#3      RawSocket.connect (dart:io-patch/socket_patch.dart:31:23)
+#4      Socket._connect (dart:io-patch/socket_patch.dart:2564:22)
+#5      Socket.connect (dart:io/socket.dart:869:21)
+#6      PgConnectionImplementation._connect (package:postgres/src/v3/connection.dart:278:31)
+#7      PgConnectionImplementation.connect (package:postgres/src/v3/connection.dart:222:35)
+#8      PoolImplementation._selectOrCreate.<anonymous closure> (package:postgres/src/pool/pool_impl.dart:205:42)
+#9      PackagePoolExt.withRequestTimeout (package:postgres/src/utils/package_pool_ext.dart:54:28)
+<asynchronous suspension>
+#10     PoolImplementation._selectOrCreate (package:postgres/src/pool/pool_impl.dart:188:12)
+<asynchronous suspension>
+#11     PoolImplementation.withConnection (package:postgres/src/pool/pool_impl.dart:146:20)
+<asynchronous suspension>
+#12     DatabaseConnection._query (package:serverpod/src/database/adapters/postgres/database_connection.dart:385:20)
+<asynchronous suspension>
+#13     DatabaseConnection._mappedResultsQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:482:18)
+<asynchronous suspension>
+#14     DatabaseConnection._deserializedMappedQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:515:18)
+<asynchronous suspension>
+#15     DatabaseConnection.deleteWhere (package:serverpod/src/database/adapters/postgres/database_connection.dart:291:12)
+<asynchronous suspension>
+#16     FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:71:23)
+<asynchronous suspension>
+
+Local stacktrace:
+#0      FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:94:36)
+<asynchronous suspension>
+
+2025-08-27 14:21:24.525761Z Internal server error. Failed to connect to database in future call manager.
+SocketException: Connection refused (OS Error: Connection refused, errno = 61), address = localhost, port = 59310
+#0      _NativeSocket.startConnect (dart:io-patch/socket_patch.dart:821:35)
+#1      _NativeSocket.connect (dart:io-patch/socket_patch.dart:1146:12)
+#2      _RawSocket.connect (dart:io-patch/socket_patch.dart:2275:26)
+#3      RawSocket.connect (dart:io-patch/socket_patch.dart:31:23)
+#4      Socket._connect (dart:io-patch/socket_patch.dart:2564:22)
+#5      Socket.connect (dart:io/socket.dart:869:21)
+#6      PgConnectionImplementation._connect (package:postgres/src/v3/connection.dart:278:31)
+#7      PgConnectionImplementation.connect (package:postgres/src/v3/connection.dart:222:35)
+#8      PoolImplementation._selectOrCreate.<anonymous closure> (package:postgres/src/pool/pool_impl.dart:205:42)
+#9      PackagePoolExt.withRequestTimeout (package:postgres/src/utils/package_pool_ext.dart:54:28)
+<asynchronous suspension>
+#10     PoolImplementation._selectOrCreate (package:postgres/src/pool/pool_impl.dart:188:12)
+<asynchronous suspension>
+#11     PoolImplementation.withConnection (package:postgres/src/pool/pool_impl.dart:146:20)
+<asynchronous suspension>
+#12     DatabaseConnection._query (package:serverpod/src/database/adapters/postgres/database_connection.dart:385:20)
+<asynchronous suspension>
+#13     DatabaseConnection._mappedResultsQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:482:18)
+<asynchronous suspension>
+#14     DatabaseConnection._deserializedMappedQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:515:18)
+<asynchronous suspension>
+#15     DatabaseConnection.deleteWhere (package:serverpod/src/database/adapters/postgres/database_connection.dart:291:12)
+<asynchronous suspension>
+#16     FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:71:23)
+<asynchronous suspension>
+
+Local stacktrace:
+#0      FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:94:36)
+<asynchronous suspension>
+
+2025-08-27 14:21:29.525323Z Internal server error. Failed to connect to database in future call manager.
+SocketException: Connection refused (OS Error: Connection refused, errno = 61), address = localhost, port = 59322
+#0      _NativeSocket.startConnect (dart:io-patch/socket_patch.dart:821:35)
+#1      _NativeSocket.connect (dart:io-patch/socket_patch.dart:1146:12)
+#2      _RawSocket.connect (dart:io-patch/socket_patch.dart:2275:26)
+#3      RawSocket.connect (dart:io-patch/socket_patch.dart:31:23)
+#4      Socket._connect (dart:io-patch/socket_patch.dart:2564:22)
+#5      Socket.connect (dart:io/socket.dart:869:21)
+#6      PgConnectionImplementation._connect (package:postgres/src/v3/connection.dart:278:31)
+#7      PgConnectionImplementation.connect (package:postgres/src/v3/connection.dart:222:35)
+#8      PoolImplementation._selectOrCreate.<anonymous closure> (package:postgres/src/pool/pool_impl.dart:205:42)
+#9      PackagePoolExt.withRequestTimeout (package:postgres/src/utils/package_pool_ext.dart:54:28)
+<asynchronous suspension>
+#10     PoolImplementation._selectOrCreate (package:postgres/src/pool/pool_impl.dart:188:12)
+<asynchronous suspension>
+#11     PoolImplementation.withConnection (package:postgres/src/pool/pool_impl.dart:146:20)
+<asynchronous suspension>
+#12     DatabaseConnection._query (package:serverpod/src/database/adapters/postgres/database_connection.dart:385:20)
+<asynchronous suspension>
+#13     DatabaseConnection._mappedResultsQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:482:18)
+<asynchronous suspension>
+#14     DatabaseConnection._deserializedMappedQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:515:18)
+<asynchronous suspension>
+#15     DatabaseConnection.deleteWhere (package:serverpod/src/database/adapters/postgres/database_connection.dart:291:12)
+<asynchronous suspension>
+#16     FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:71:23)
+<asynchronous suspension>
+
+Local stacktrace:
+#0      FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:94:36)
+<asynchronous suspension>
+
+2025-08-27 14:21:34.529143Z Internal server error. Failed to connect to database in future call manager.
+SocketException: Connection refused (OS Error: Connection refused, errno = 61), address = localhost, port = 59329
+#0      _NativeSocket.startConnect (dart:io-patch/socket_patch.dart:821:35)
+#1      _NativeSocket.connect (dart:io-patch/socket_patch.dart:1146:12)
+#2      _RawSocket.connect (dart:io-patch/socket_patch.dart:2275:26)
+#3      RawSocket.connect (dart:io-patch/socket_patch.dart:31:23)
+#4      Socket._connect (dart:io-patch/socket_patch.dart:2564:22)
+#5      Socket.connect (dart:io/socket.dart:869:21)
+#6      PgConnectionImplementation._connect (package:postgres/src/v3/connection.dart:278:31)
+#7      PgConnectionImplementation.connect (package:postgres/src/v3/connection.dart:222:35)
+#8      PoolImplementation._selectOrCreate.<anonymous closure> (package:postgres/src/pool/pool_impl.dart:205:42)
+#9      PackagePoolExt.withRequestTimeout (package:postgres/src/utils/package_pool_ext.dart:54:28)
+<asynchronous suspension>
+#10     PoolImplementation._selectOrCreate (package:postgres/src/pool/pool_impl.dart:188:12)
+<asynchronous suspension>
+#11     PoolImplementation.withConnection (package:postgres/src/pool/pool_impl.dart:146:20)
+<asynchronous suspension>
+#12     DatabaseConnection._query (package:serverpod/src/database/adapters/postgres/database_connection.dart:385:20)
+<asynchronous suspension>
+#13     DatabaseConnection._mappedResultsQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:482:18)
+<asynchronous suspension>
+#14     DatabaseConnection._deserializedMappedQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:515:18)
+<asynchronous suspension>
+#15     DatabaseConnection.deleteWhere (package:serverpod/src/database/adapters/postgres/database_connection.dart:291:12)
+<asynchronous suspension>
+#16     FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:71:23)
+<asynchronous suspension>
+
+Local stacktrace:
+#0      FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:94:36)
+<asynchronous suspension>
+
+2025-08-27 14:21:39.528574Z Internal server error. Failed to connect to database in future call manager.
+SocketException: Connection refused (OS Error: Connection refused, errno = 61), address = localhost, port = 59336
+#0      _NativeSocket.startConnect (dart:io-patch/socket_patch.dart:821:35)
+#1      _NativeSocket.connect (dart:io-patch/socket_patch.dart:1146:12)
+#2      _RawSocket.connect (dart:io-patch/socket_patch.dart:2275:26)
+#3      RawSocket.connect (dart:io-patch/socket_patch.dart:31:23)
+#4      Socket._connect (dart:io-patch/socket_patch.dart:2564:22)
+#5      Socket.connect (dart:io/socket.dart:869:21)
+#6      PgConnectionImplementation._connect (package:postgres/src/v3/connection.dart:278:31)
+#7      PgConnectionImplementation.connect (package:postgres/src/v3/connection.dart:222:35)
+#8      PoolImplementation._selectOrCreate.<anonymous closure> (package:postgres/src/pool/pool_impl.dart:205:42)
+#9      PackagePoolExt.withRequestTimeout (package:postgres/src/utils/package_pool_ext.dart:54:28)
+<asynchronous suspension>
+#10     PoolImplementation._selectOrCreate (package:postgres/src/pool/pool_impl.dart:188:12)
+<asynchronous suspension>
+#11     PoolImplementation.withConnection (package:postgres/src/pool/pool_impl.dart:146:20)
+<asynchronous suspension>
+#12     DatabaseConnection._query (package:serverpod/src/database/adapters/postgres/database_connection.dart:385:20)
+<asynchronous suspension>
+#13     DatabaseConnection._mappedResultsQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:482:18)
+<asynchronous suspension>
+#14     DatabaseConnection._deserializedMappedQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:515:18)
+<asynchronous suspension>
+#15     DatabaseConnection.deleteWhere (package:serverpod/src/database/adapters/postgres/database_connection.dart:291:12)
+<asynchronous suspension>
+#16     FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:71:23)
+<asynchronous suspension>
+
+Local stacktrace:
+#0      FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:94:36)
+<asynchronous suspension>
+
+2025-08-27 14:21:44.527350Z Internal server error. Failed to connect to database in future call manager.
+SocketException: Connection refused (OS Error: Connection refused, errno = 61), address = localhost, port = 59343
+#0      _NativeSocket.startConnect (dart:io-patch/socket_patch.dart:821:35)
+#1      _NativeSocket.connect (dart:io-patch/socket_patch.dart:1146:12)
+#2      _RawSocket.connect (dart:io-patch/socket_patch.dart:2275:26)
+#3      RawSocket.connect (dart:io-patch/socket_patch.dart:31:23)
+#4      Socket._connect (dart:io-patch/socket_patch.dart:2564:22)
+#5      Socket.connect (dart:io/socket.dart:869:21)
+#6      PgConnectionImplementation._connect (package:postgres/src/v3/connection.dart:278:31)
+#7      PgConnectionImplementation.connect (package:postgres/src/v3/connection.dart:222:35)
+#8      PoolImplementation._selectOrCreate.<anonymous closure> (package:postgres/src/pool/pool_impl.dart:205:42)
+#9      PackagePoolExt.withRequestTimeout (package:postgres/src/utils/package_pool_ext.dart:54:28)
+<asynchronous suspension>
+#10     PoolImplementation._selectOrCreate (package:postgres/src/pool/pool_impl.dart:188:12)
+<asynchronous suspension>
+#11     PoolImplementation.withConnection (package:postgres/src/pool/pool_impl.dart:146:20)
+<asynchronous suspension>
+#12     DatabaseConnection._query (package:serverpod/src/database/adapters/postgres/database_connection.dart:385:20)
+<asynchronous suspension>
+#13     DatabaseConnection._mappedResultsQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:482:18)
+<asynchronous suspension>
+#14     DatabaseConnection._deserializedMappedQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:515:18)
+<asynchronous suspension>
+#15     DatabaseConnection.deleteWhere (package:serverpod/src/database/adapters/postgres/database_connection.dart:291:12)
+<asynchronous suspension>
+#16     FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:71:23)
+<asynchronous suspension>
+
+Local stacktrace:
+#0      FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:94:36)
+<asynchronous suspension>
+
+2025-08-27 14:21:49.526360Z Internal server error. Failed to connect to database in future call manager.
+SocketException: Connection refused (OS Error: Connection refused, errno = 61), address = localhost, port = 59349
+#0      _NativeSocket.startConnect (dart:io-patch/socket_patch.dart:821:35)
+#1      _NativeSocket.connect (dart:io-patch/socket_patch.dart:1146:12)
+#2      _RawSocket.connect (dart:io-patch/socket_patch.dart:2275:26)
+#3      RawSocket.connect (dart:io-patch/socket_patch.dart:31:23)
+#4      Socket._connect (dart:io-patch/socket_patch.dart:2564:22)
+#5      Socket.connect (dart:io/socket.dart:869:21)
+#6      PgConnectionImplementation._connect (package:postgres/src/v3/connection.dart:278:31)
+#7      PgConnectionImplementation.connect (package:postgres/src/v3/connection.dart:222:35)
+#8      PoolImplementation._selectOrCreate.<anonymous closure> (package:postgres/src/pool/pool_impl.dart:205:42)
+#9      PackagePoolExt.withRequestTimeout (package:postgres/src/utils/package_pool_ext.dart:54:28)
+<asynchronous suspension>
+#10     PoolImplementation._selectOrCreate (package:postgres/src/pool/pool_impl.dart:188:12)
+<asynchronous suspension>
+#11     PoolImplementation.withConnection (package:postgres/src/pool/pool_impl.dart:146:20)
+<asynchronous suspension>
+#12     DatabaseConnection._query (package:serverpod/src/database/adapters/postgres/database_connection.dart:385:20)
+<asynchronous suspension>
+#13     DatabaseConnection._mappedResultsQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:482:18)
+<asynchronous suspension>
+#14     DatabaseConnection._deserializedMappedQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:515:18)
+<asynchronous suspension>
+#15     DatabaseConnection.deleteWhere (package:serverpod/src/database/adapters/postgres/database_connection.dart:291:12)
+<asynchronous suspension>
+#16     FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:71:23)
+<asynchronous suspension>
+
+Local stacktrace:
+#0      FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:94:36)
+<asynchronous suspension>
+
+2025-08-27 14:21:54.526579Z Internal server error. Failed to connect to database in future call manager.
+SocketException: Connection refused (OS Error: Connection refused, errno = 61), address = localhost, port = 59360
+#0      _NativeSocket.startConnect (dart:io-patch/socket_patch.dart:821:35)
+#1      _NativeSocket.connect (dart:io-patch/socket_patch.dart:1146:12)
+#2      _RawSocket.connect (dart:io-patch/socket_patch.dart:2275:26)
+#3      RawSocket.connect (dart:io-patch/socket_patch.dart:31:23)
+#4      Socket._connect (dart:io-patch/socket_patch.dart:2564:22)
+#5      Socket.connect (dart:io/socket.dart:869:21)
+#6      PgConnectionImplementation._connect (package:postgres/src/v3/connection.dart:278:31)
+#7      PgConnectionImplementation.connect (package:postgres/src/v3/connection.dart:222:35)
+#8      PoolImplementation._selectOrCreate.<anonymous closure> (package:postgres/src/pool/pool_impl.dart:205:42)
+#9      PackagePoolExt.withRequestTimeout (package:postgres/src/utils/package_pool_ext.dart:54:28)
+<asynchronous suspension>
+#10     PoolImplementation._selectOrCreate (package:postgres/src/pool/pool_impl.dart:188:12)
+<asynchronous suspension>
+#11     PoolImplementation.withConnection (package:postgres/src/pool/pool_impl.dart:146:20)
+<asynchronous suspension>
+#12     DatabaseConnection._query (package:serverpod/src/database/adapters/postgres/database_connection.dart:385:20)
+<asynchronous suspension>
+#13     DatabaseConnection._mappedResultsQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:482:18)
+<asynchronous suspension>
+#14     DatabaseConnection._deserializedMappedQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:515:18)
+<asynchronous suspension>
+#15     DatabaseConnection.deleteWhere (package:serverpod/src/database/adapters/postgres/database_connection.dart:291:12)
+<asynchronous suspension>
+#16     FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:71:23)
+<asynchronous suspension>
+
+Local stacktrace:
+#0      FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:94:36)
+<asynchronous suspension>
+
+2025-08-27 14:21:58.046293Z ERROR: Failed to reload runtime settings.
+2025-08-27 14:21:58.046293Z ERROR: SocketException: Connection refused (OS Error: Connection refused, errno = 61), address = localhost, port = 59370
+#0      _NativeSocket.startConnect (dart:io-patch/socket_patch.dart:821:35)
+#1      _NativeSocket.connect (dart:io-patch/socket_patch.dart:1146:12)
+#2      _RawSocket.connect (dart:io-patch/socket_patch.dart:2275:26)
+#3      RawSocket.connect (dart:io-patch/socket_patch.dart:31:23)
+#4      Socket._connect (dart:io-patch/socket_patch.dart:2564:22)
+#5      Socket.connect (dart:io/socket.dart:869:21)
+#6      PgConnectionImplementation._connect (package:postgres/src/v3/connection.dart:278:31)
+#7      PgConnectionImplementation.connect (package:postgres/src/v3/connection.dart:222:35)
+#8      PoolImplementation._selectOrCreate.<anonymous closure> (package:postgres/src/pool/pool_impl.dart:205:42)
+#9      PackagePoolExt.withRequestTimeout (package:postgres/src/utils/package_pool_ext.dart:54:28)
+<asynchronous suspension>
+#10     PoolImplementation._selectOrCreate (package:postgres/src/pool/pool_impl.dart:188:12)
+<asynchronous suspension>
+#11     PoolImplementation.withConnection (package:postgres/src/pool/pool_impl.dart:146:20)
+<asynchronous suspension>
+#12     DatabaseConnection._query (package:serverpod/src/database/adapters/postgres/database_connection.dart:385:20)
+<asynchronous suspension>
+#13     DatabaseConnection._mappedResultsQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:482:18)
+<asynchronous suspension>
+#14     DatabaseConnection._deserializedMappedQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:515:18)
+<asynchronous suspension>
+#15     DatabaseConnection.findFirstRow (package:serverpod/src/database/adapters/postgres/database_connection.dart:98:16)
+<asynchronous suspension>
+#16     Database.findFirstRow (package:serverpod/src/database/database.dart:97:12)
+<asynchronous suspension>
+#17     Serverpod.reloadRuntimeSettings (package:serverpod/src/server/serverpod.dart:277:11)
+<asynchronous suspension>
+#18     HealthCheckManager._innerPerformHealthCheck (package:serverpod/src/server/health_check_manager.dart:95:5)
+<asynchronous suspension>
+#19     HealthCheckManager._performHealthCheck (package:serverpod/src/server/health_check_manager.dart:57:7)
+<asynchronous suspension>
+
+2025-08-27 14:21:58.060920Z ERROR: Failed to cleanup closed sessions
+2025-08-27 14:21:58.060920Z ERROR: SocketException: Connection refused (OS Error: Connection refused, errno = 61), address = localhost, port = 59372
+#0      _NativeSocket.startConnect (dart:io-patch/socket_patch.dart:821:35)
+#1      _NativeSocket.connect (dart:io-patch/socket_patch.dart:1146:12)
+#2      _RawSocket.connect (dart:io-patch/socket_patch.dart:2275:26)
+#3      RawSocket.connect (dart:io-patch/socket_patch.dart:31:23)
+#4      Socket._connect (dart:io-patch/socket_patch.dart:2564:22)
+#5      Socket.connect (dart:io/socket.dart:869:21)
+#6      PgConnectionImplementation._connect (package:postgres/src/v3/connection.dart:278:31)
+#7      PgConnectionImplementation.connect (package:postgres/src/v3/connection.dart:222:35)
+#8      PoolImplementation._selectOrCreate.<anonymous closure> (package:postgres/src/pool/pool_impl.dart:205:42)
+#9      PackagePoolExt.withRequestTimeout (package:postgres/src/utils/package_pool_ext.dart:54:28)
+<asynchronous suspension>
+#10     PoolImplementation._selectOrCreate (package:postgres/src/pool/pool_impl.dart:188:12)
+<asynchronous suspension>
+#11     PoolImplementation.withConnection (package:postgres/src/pool/pool_impl.dart:146:20)
+<asynchronous suspension>
+#12     DatabaseConnection._query (package:serverpod/src/database/adapters/postgres/database_connection.dart:385:20)
+<asynchronous suspension>
+#13     DatabaseConnection.query (package:serverpod/src/database/adapters/postgres/database_connection.dart:354:18)
+<asynchronous suspension>
+#14     HealthCheckManager._cleanUpClosedSessions (package:serverpod/src/server/health_check_manager.dart:134:7)
+<asynchronous suspension>
+#15     HealthCheckManager._innerPerformHealthCheck (package:serverpod/src/server/health_check_manager.dart:97:5)
+<asynchronous suspension>
+#16     HealthCheckManager._performHealthCheck (package:serverpod/src/server/health_check_manager.dart:57:7)
+<asynchronous suspension>
+
+2025-08-27 14:21:58.075837Z ERROR: Failed to optimize health check data
+2025-08-27 14:21:58.075837Z ERROR: SocketException: Connection refused (OS Error: Connection refused, errno = 61), address = localhost, port = 59374
+#0      _NativeSocket.startConnect (dart:io-patch/socket_patch.dart:821:35)
+#1      _NativeSocket.connect (dart:io-patch/socket_patch.dart:1146:12)
+#2      _RawSocket.connect (dart:io-patch/socket_patch.dart:2275:26)
+#3      RawSocket.connect (dart:io-patch/socket_patch.dart:31:23)
+#4      Socket._connect (dart:io-patch/socket_patch.dart:2564:22)
+#5      Socket.connect (dart:io/socket.dart:869:21)
+#6      PgConnectionImplementation._connect (package:postgres/src/v3/connection.dart:278:31)
+#7      PgConnectionImplementation.connect (package:postgres/src/v3/connection.dart:222:35)
+#8      PoolImplementation._selectOrCreate.<anonymous closure> (package:postgres/src/pool/pool_impl.dart:205:42)
+#9      PackagePoolExt.withRequestTimeout (package:postgres/src/utils/package_pool_ext.dart:54:28)
+<asynchronous suspension>
+#10     PoolImplementation._selectOrCreate (package:postgres/src/pool/pool_impl.dart:188:12)
+<asynchronous suspension>
+#11     PoolImplementation.withConnection (package:postgres/src/pool/pool_impl.dart:146:20)
+<asynchronous suspension>
+#12     DatabaseConnection._query (package:serverpod/src/database/adapters/postgres/database_connection.dart:385:20)
+<asynchronous suspension>
+#13     DatabaseConnection._mappedResultsQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:482:18)
+<asynchronous suspension>
+#14     DatabaseConnection._deserializedMappedQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:515:18)
+<asynchronous suspension>
+#15     HealthCheckManager._optimizeConnectionInfoEntries (package:serverpod/src/server/health_check_manager.dart:206:19)
+<asynchronous suspension>
+#16     HealthCheckManager._optimizeHealthCheckData (package:serverpod/src/server/health_check_manager.dart:153:32)
+<asynchronous suspension>
+#17     HealthCheckManager._innerPerformHealthCheck (package:serverpod/src/server/health_check_manager.dart:99:5)
+<asynchronous suspension>
+#18     HealthCheckManager._performHealthCheck (package:serverpod/src/server/health_check_manager.dart:57:7)
+<asynchronous suspension>
+
+2025-08-27 14:21:59.526838Z Internal server error. Failed to connect to database in future call manager.
+SocketException: Connection refused (OS Error: Connection refused, errno = 61), address = localhost, port = 59376
+#0      _NativeSocket.startConnect (dart:io-patch/socket_patch.dart:821:35)
+#1      _NativeSocket.connect (dart:io-patch/socket_patch.dart:1146:12)
+#2      _RawSocket.connect (dart:io-patch/socket_patch.dart:2275:26)
+#3      RawSocket.connect (dart:io-patch/socket_patch.dart:31:23)
+#4      Socket._connect (dart:io-patch/socket_patch.dart:2564:22)
+#5      Socket.connect (dart:io/socket.dart:869:21)
+#6      PgConnectionImplementation._connect (package:postgres/src/v3/connection.dart:278:31)
+#7      PgConnectionImplementation.connect (package:postgres/src/v3/connection.dart:222:35)
+#8      PoolImplementation._selectOrCreate.<anonymous closure> (package:postgres/src/pool/pool_impl.dart:205:42)
+#9      PackagePoolExt.withRequestTimeout (package:postgres/src/utils/package_pool_ext.dart:54:28)
+<asynchronous suspension>
+#10     PoolImplementation._selectOrCreate (package:postgres/src/pool/pool_impl.dart:188:12)
+<asynchronous suspension>
+#11     PoolImplementation.withConnection (package:postgres/src/pool/pool_impl.dart:146:20)
+<asynchronous suspension>
+#12     DatabaseConnection._query (package:serverpod/src/database/adapters/postgres/database_connection.dart:385:20)
+<asynchronous suspension>
+#13     DatabaseConnection._mappedResultsQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:482:18)
+<asynchronous suspension>
+#14     DatabaseConnection._deserializedMappedQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:515:18)
+<asynchronous suspension>
+#15     DatabaseConnection.deleteWhere (package:serverpod/src/database/adapters/postgres/database_connection.dart:291:12)
+<asynchronous suspension>
+#16     FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:71:23)
+<asynchronous suspension>
+
+Local stacktrace:
+#0      FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:94:36)
+<asynchronous suspension>
+
+2025-08-27 14:22:04.528831Z Internal server error. Failed to connect to database in future call manager.
+SocketException: Connection refused (OS Error: Connection refused, errno = 61), address = localhost, port = 59384
+#0      _NativeSocket.startConnect (dart:io-patch/socket_patch.dart:821:35)
+#1      _NativeSocket.connect (dart:io-patch/socket_patch.dart:1146:12)
+#2      _RawSocket.connect (dart:io-patch/socket_patch.dart:2275:26)
+#3      RawSocket.connect (dart:io-patch/socket_patch.dart:31:23)
+#4      Socket._connect (dart:io-patch/socket_patch.dart:2564:22)
+#5      Socket.connect (dart:io/socket.dart:869:21)
+#6      PgConnectionImplementation._connect (package:postgres/src/v3/connection.dart:278:31)
+#7      PgConnectionImplementation.connect (package:postgres/src/v3/connection.dart:222:35)
+#8      PoolImplementation._selectOrCreate.<anonymous closure> (package:postgres/src/pool/pool_impl.dart:205:42)
+#9      PackagePoolExt.withRequestTimeout (package:postgres/src/utils/package_pool_ext.dart:54:28)
+<asynchronous suspension>
+#10     PoolImplementation._selectOrCreate (package:postgres/src/pool/pool_impl.dart:188:12)
+<asynchronous suspension>
+#11     PoolImplementation.withConnection (package:postgres/src/pool/pool_impl.dart:146:20)
+<asynchronous suspension>
+#12     DatabaseConnection._query (package:serverpod/src/database/adapters/postgres/database_connection.dart:385:20)
+<asynchronous suspension>
+#13     DatabaseConnection._mappedResultsQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:482:18)
+<asynchronous suspension>
+#14     DatabaseConnection._deserializedMappedQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:515:18)
+<asynchronous suspension>
+#15     DatabaseConnection.deleteWhere (package:serverpod/src/database/adapters/postgres/database_connection.dart:291:12)
+<asynchronous suspension>
+#16     FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:71:23)
+<asynchronous suspension>
+
+Local stacktrace:
+#0      FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:94:36)
+<asynchronous suspension>
+
+2025-08-27 14:22:09.526731Z Internal server error. Failed to connect to database in future call manager.
+SocketException: Connection refused (OS Error: Connection refused, errno = 61), address = localhost, port = 59397
+#0      _NativeSocket.startConnect (dart:io-patch/socket_patch.dart:821:35)
+#1      _NativeSocket.connect (dart:io-patch/socket_patch.dart:1146:12)
+#2      _RawSocket.connect (dart:io-patch/socket_patch.dart:2275:26)
+#3      RawSocket.connect (dart:io-patch/socket_patch.dart:31:23)
+#4      Socket._connect (dart:io-patch/socket_patch.dart:2564:22)
+#5      Socket.connect (dart:io/socket.dart:869:21)
+#6      PgConnectionImplementation._connect (package:postgres/src/v3/connection.dart:278:31)
+#7      PgConnectionImplementation.connect (package:postgres/src/v3/connection.dart:222:35)
+#8      PoolImplementation._selectOrCreate.<anonymous closure> (package:postgres/src/pool/pool_impl.dart:205:42)
+#9      PackagePoolExt.withRequestTimeout (package:postgres/src/utils/package_pool_ext.dart:54:28)
+<asynchronous suspension>
+#10     PoolImplementation._selectOrCreate (package:postgres/src/pool/pool_impl.dart:188:12)
+<asynchronous suspension>
+#11     PoolImplementation.withConnection (package:postgres/src/pool/pool_impl.dart:146:20)
+<asynchronous suspension>
+#12     DatabaseConnection._query (package:serverpod/src/database/adapters/postgres/database_connection.dart:385:20)
+<asynchronous suspension>
+#13     DatabaseConnection._mappedResultsQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:482:18)
+<asynchronous suspension>
+#14     DatabaseConnection._deserializedMappedQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:515:18)
+<asynchronous suspension>
+#15     DatabaseConnection.deleteWhere (package:serverpod/src/database/adapters/postgres/database_connection.dart:291:12)
+<asynchronous suspension>
+#16     FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:71:23)
+<asynchronous suspension>
+
+Local stacktrace:
+#0      FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:94:36)
+<asynchronous suspension>
+
+2025-08-27 14:22:14.529046Z Internal server error. Failed to connect to database in future call manager.
+SocketException: Connection refused (OS Error: Connection refused, errno = 61), address = localhost, port = 59410
+#0      _NativeSocket.startConnect (dart:io-patch/socket_patch.dart:821:35)
+#1      _NativeSocket.connect (dart:io-patch/socket_patch.dart:1146:12)
+#2      _RawSocket.connect (dart:io-patch/socket_patch.dart:2275:26)
+#3      RawSocket.connect (dart:io-patch/socket_patch.dart:31:23)
+#4      Socket._connect (dart:io-patch/socket_patch.dart:2564:22)
+#5      Socket.connect (dart:io/socket.dart:869:21)
+#6      PgConnectionImplementation._connect (package:postgres/src/v3/connection.dart:278:31)
+#7      PgConnectionImplementation.connect (package:postgres/src/v3/connection.dart:222:35)
+#8      PoolImplementation._selectOrCreate.<anonymous closure> (package:postgres/src/pool/pool_impl.dart:205:42)
+#9      PackagePoolExt.withRequestTimeout (package:postgres/src/utils/package_pool_ext.dart:54:28)
+<asynchronous suspension>
+#10     PoolImplementation._selectOrCreate (package:postgres/src/pool/pool_impl.dart:188:12)
+<asynchronous suspension>
+#11     PoolImplementation.withConnection (package:postgres/src/pool/pool_impl.dart:146:20)
+<asynchronous suspension>
+#12     DatabaseConnection._query (package:serverpod/src/database/adapters/postgres/database_connection.dart:385:20)
+<asynchronous suspension>
+#13     DatabaseConnection._mappedResultsQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:482:18)
+<asynchronous suspension>
+#14     DatabaseConnection._deserializedMappedQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:515:18)
+<asynchronous suspension>
+#15     DatabaseConnection.deleteWhere (package:serverpod/src/database/adapters/postgres/database_connection.dart:291:12)
+<asynchronous suspension>
+#16     FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:71:23)
+<asynchronous suspension>
+
+Local stacktrace:
+#0      FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:94:36)
+<asynchronous suspension>
+
+2025-08-27 14:22:19.529004Z Internal server error. Failed to connect to database in future call manager.
+SocketException: Connection refused (OS Error: Connection refused, errno = 61), address = localhost, port = 59417
+#0      _NativeSocket.startConnect (dart:io-patch/socket_patch.dart:821:35)
+#1      _NativeSocket.connect (dart:io-patch/socket_patch.dart:1146:12)
+#2      _RawSocket.connect (dart:io-patch/socket_patch.dart:2275:26)
+#3      RawSocket.connect (dart:io-patch/socket_patch.dart:31:23)
+#4      Socket._connect (dart:io-patch/socket_patch.dart:2564:22)
+#5      Socket.connect (dart:io/socket.dart:869:21)
+#6      PgConnectionImplementation._connect (package:postgres/src/v3/connection.dart:278:31)
+#7      PgConnectionImplementation.connect (package:postgres/src/v3/connection.dart:222:35)
+#8      PoolImplementation._selectOrCreate.<anonymous closure> (package:postgres/src/pool/pool_impl.dart:205:42)
+#9      PackagePoolExt.withRequestTimeout (package:postgres/src/utils/package_pool_ext.dart:54:28)
+<asynchronous suspension>
+#10     PoolImplementation._selectOrCreate (package:postgres/src/pool/pool_impl.dart:188:12)
+<asynchronous suspension>
+#11     PoolImplementation.withConnection (package:postgres/src/pool/pool_impl.dart:146:20)
+<asynchronous suspension>
+#12     DatabaseConnection._query (package:serverpod/src/database/adapters/postgres/database_connection.dart:385:20)
+<asynchronous suspension>
+#13     DatabaseConnection._mappedResultsQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:482:18)
+<asynchronous suspension>
+#14     DatabaseConnection._deserializedMappedQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:515:18)
+<asynchronous suspension>
+#15     DatabaseConnection.deleteWhere (package:serverpod/src/database/adapters/postgres/database_connection.dart:291:12)
+<asynchronous suspension>
+#16     FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:71:23)
+<asynchronous suspension>
+
+Local stacktrace:
+#0      FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:94:36)
+<asynchronous suspension>
+
+2025-08-27 14:22:24.526219Z Internal server error. Failed to connect to database in future call manager.
+SocketException: Connection refused (OS Error: Connection refused, errno = 61), address = localhost, port = 59424
+#0      _NativeSocket.startConnect (dart:io-patch/socket_patch.dart:821:35)
+#1      _NativeSocket.connect (dart:io-patch/socket_patch.dart:1146:12)
+#2      _RawSocket.connect (dart:io-patch/socket_patch.dart:2275:26)
+#3      RawSocket.connect (dart:io-patch/socket_patch.dart:31:23)
+#4      Socket._connect (dart:io-patch/socket_patch.dart:2564:22)
+#5      Socket.connect (dart:io/socket.dart:869:21)
+#6      PgConnectionImplementation._connect (package:postgres/src/v3/connection.dart:278:31)
+#7      PgConnectionImplementation.connect (package:postgres/src/v3/connection.dart:222:35)
+#8      PoolImplementation._selectOrCreate.<anonymous closure> (package:postgres/src/pool/pool_impl.dart:205:42)
+#9      PackagePoolExt.withRequestTimeout (package:postgres/src/utils/package_pool_ext.dart:54:28)
+<asynchronous suspension>
+#10     PoolImplementation._selectOrCreate (package:postgres/src/pool/pool_impl.dart:188:12)
+<asynchronous suspension>
+#11     PoolImplementation.withConnection (package:postgres/src/pool/pool_impl.dart:146:20)
+<asynchronous suspension>
+#12     DatabaseConnection._query (package:serverpod/src/database/adapters/postgres/database_connection.dart:385:20)
+<asynchronous suspension>
+#13     DatabaseConnection._mappedResultsQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:482:18)
+<asynchronous suspension>
+#14     DatabaseConnection._deserializedMappedQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:515:18)
+<asynchronous suspension>
+#15     DatabaseConnection.deleteWhere (package:serverpod/src/database/adapters/postgres/database_connection.dart:291:12)
+<asynchronous suspension>
+#16     FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:71:23)
+<asynchronous suspension>
+
+Local stacktrace:
+#0      FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:94:36)
+<asynchronous suspension>
+
+2025-08-27 14:22:29.527425Z Internal server error. Failed to connect to database in future call manager.
+SocketException: Connection refused (OS Error: Connection refused, errno = 61), address = localhost, port = 59432
+#0      _NativeSocket.startConnect (dart:io-patch/socket_patch.dart:821:35)
+#1      _NativeSocket.connect (dart:io-patch/socket_patch.dart:1146:12)
+#2      _RawSocket.connect (dart:io-patch/socket_patch.dart:2275:26)
+#3      RawSocket.connect (dart:io-patch/socket_patch.dart:31:23)
+#4      Socket._connect (dart:io-patch/socket_patch.dart:2564:22)
+#5      Socket.connect (dart:io/socket.dart:869:21)
+#6      PgConnectionImplementation._connect (package:postgres/src/v3/connection.dart:278:31)
+#7      PgConnectionImplementation.connect (package:postgres/src/v3/connection.dart:222:35)
+#8      PoolImplementation._selectOrCreate.<anonymous closure> (package:postgres/src/pool/pool_impl.dart:205:42)
+#9      PackagePoolExt.withRequestTimeout (package:postgres/src/utils/package_pool_ext.dart:54:28)
+<asynchronous suspension>
+#10     PoolImplementation._selectOrCreate (package:postgres/src/pool/pool_impl.dart:188:12)
+<asynchronous suspension>
+#11     PoolImplementation.withConnection (package:postgres/src/pool/pool_impl.dart:146:20)
+<asynchronous suspension>
+#12     DatabaseConnection._query (package:serverpod/src/database/adapters/postgres/database_connection.dart:385:20)
+<asynchronous suspension>
+#13     DatabaseConnection._mappedResultsQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:482:18)
+<asynchronous suspension>
+#14     DatabaseConnection._deserializedMappedQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:515:18)
+<asynchronous suspension>
+#15     DatabaseConnection.deleteWhere (package:serverpod/src/database/adapters/postgres/database_connection.dart:291:12)
+<asynchronous suspension>
+#16     FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:71:23)
+<asynchronous suspension>
+
+Local stacktrace:
+#0      FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:94:36)
+<asynchronous suspension>
+
+2025-08-27 14:22:34.531137Z Internal server error. Failed to connect to database in future call manager.
+SocketException: Connection refused (OS Error: Connection refused, errno = 61), address = localhost, port = 59442
+#0      _NativeSocket.startConnect (dart:io-patch/socket_patch.dart:821:35)
+#1      _NativeSocket.connect (dart:io-patch/socket_patch.dart:1146:12)
+#2      _RawSocket.connect (dart:io-patch/socket_patch.dart:2275:26)
+#3      RawSocket.connect (dart:io-patch/socket_patch.dart:31:23)
+#4      Socket._connect (dart:io-patch/socket_patch.dart:2564:22)
+#5      Socket.connect (dart:io/socket.dart:869:21)
+#6      PgConnectionImplementation._connect (package:postgres/src/v3/connection.dart:278:31)
+#7      PgConnectionImplementation.connect (package:postgres/src/v3/connection.dart:222:35)
+#8      PoolImplementation._selectOrCreate.<anonymous closure> (package:postgres/src/pool/pool_impl.dart:205:42)
+#9      PackagePoolExt.withRequestTimeout (package:postgres/src/utils/package_pool_ext.dart:54:28)
+<asynchronous suspension>
+#10     PoolImplementation._selectOrCreate (package:postgres/src/pool/pool_impl.dart:188:12)
+<asynchronous suspension>
+#11     PoolImplementation.withConnection (package:postgres/src/pool/pool_impl.dart:146:20)
+<asynchronous suspension>
+#12     DatabaseConnection._query (package:serverpod/src/database/adapters/postgres/database_connection.dart:385:20)
+<asynchronous suspension>
+#13     DatabaseConnection._mappedResultsQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:482:18)
+<asynchronous suspension>
+#14     DatabaseConnection._deserializedMappedQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:515:18)
+<asynchronous suspension>
+#15     DatabaseConnection.deleteWhere (package:serverpod/src/database/adapters/postgres/database_connection.dart:291:12)
+<asynchronous suspension>
+#16     FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:71:23)
+<asynchronous suspension>
+
+Local stacktrace:
+#0      FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:94:36)
+<asynchronous suspension>
+
+2025-08-27 14:22:39.526657Z Internal server error. Failed to connect to database in future call manager.
+SocketException: Connection refused (OS Error: Connection refused, errno = 61), address = localhost, port = 59448
+#0      _NativeSocket.startConnect (dart:io-patch/socket_patch.dart:821:35)
+#1      _NativeSocket.connect (dart:io-patch/socket_patch.dart:1146:12)
+#2      _RawSocket.connect (dart:io-patch/socket_patch.dart:2275:26)
+#3      RawSocket.connect (dart:io-patch/socket_patch.dart:31:23)
+#4      Socket._connect (dart:io-patch/socket_patch.dart:2564:22)
+#5      Socket.connect (dart:io/socket.dart:869:21)
+#6      PgConnectionImplementation._connect (package:postgres/src/v3/connection.dart:278:31)
+#7      PgConnectionImplementation.connect (package:postgres/src/v3/connection.dart:222:35)
+#8      PoolImplementation._selectOrCreate.<anonymous closure> (package:postgres/src/pool/pool_impl.dart:205:42)
+#9      PackagePoolExt.withRequestTimeout (package:postgres/src/utils/package_pool_ext.dart:54:28)
+<asynchronous suspension>
+#10     PoolImplementation._selectOrCreate (package:postgres/src/pool/pool_impl.dart:188:12)
+<asynchronous suspension>
+#11     PoolImplementation.withConnection (package:postgres/src/pool/pool_impl.dart:146:20)
+<asynchronous suspension>
+#12     DatabaseConnection._query (package:serverpod/src/database/adapters/postgres/database_connection.dart:385:20)
+<asynchronous suspension>
+#13     DatabaseConnection._mappedResultsQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:482:18)
+<asynchronous suspension>
+#14     DatabaseConnection._deserializedMappedQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:515:18)
+<asynchronous suspension>
+#15     DatabaseConnection.deleteWhere (package:serverpod/src/database/adapters/postgres/database_connection.dart:291:12)
+<asynchronous suspension>
+#16     FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:71:23)
+<asynchronous suspension>
+
+Local stacktrace:
+#0      FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:94:36)
+<asynchronous suspension>
+
+2025-08-27 14:22:44.526783Z Internal server error. Failed to connect to database in future call manager.
+SocketException: Connection refused (OS Error: Connection refused, errno = 61), address = localhost, port = 59455
+#0      _NativeSocket.startConnect (dart:io-patch/socket_patch.dart:821:35)
+#1      _NativeSocket.connect (dart:io-patch/socket_patch.dart:1146:12)
+#2      _RawSocket.connect (dart:io-patch/socket_patch.dart:2275:26)
+#3      RawSocket.connect (dart:io-patch/socket_patch.dart:31:23)
+#4      Socket._connect (dart:io-patch/socket_patch.dart:2564:22)
+#5      Socket.connect (dart:io/socket.dart:869:21)
+#6      PgConnectionImplementation._connect (package:postgres/src/v3/connection.dart:278:31)
+#7      PgConnectionImplementation.connect (package:postgres/src/v3/connection.dart:222:35)
+#8      PoolImplementation._selectOrCreate.<anonymous closure> (package:postgres/src/pool/pool_impl.dart:205:42)
+#9      PackagePoolExt.withRequestTimeout (package:postgres/src/utils/package_pool_ext.dart:54:28)
+<asynchronous suspension>
+#10     PoolImplementation._selectOrCreate (package:postgres/src/pool/pool_impl.dart:188:12)
+<asynchronous suspension>
+#11     PoolImplementation.withConnection (package:postgres/src/pool/pool_impl.dart:146:20)
+<asynchronous suspension>
+#12     DatabaseConnection._query (package:serverpod/src/database/adapters/postgres/database_connection.dart:385:20)
+<asynchronous suspension>
+#13     DatabaseConnection._mappedResultsQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:482:18)
+<asynchronous suspension>
+#14     DatabaseConnection._deserializedMappedQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:515:18)
+<asynchronous suspension>
+#15     DatabaseConnection.deleteWhere (package:serverpod/src/database/adapters/postgres/database_connection.dart:291:12)
+<asynchronous suspension>
+#16     FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:71:23)
+<asynchronous suspension>
+
+Local stacktrace:
+#0      FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:94:36)
+<asynchronous suspension>
+
+2025-08-27 14:22:49.528414Z Internal server error. Failed to connect to database in future call manager.
+SocketException: Connection refused (OS Error: Connection refused, errno = 61), address = localhost, port = 59461
+#0      _NativeSocket.startConnect (dart:io-patch/socket_patch.dart:821:35)
+#1      _NativeSocket.connect (dart:io-patch/socket_patch.dart:1146:12)
+#2      _RawSocket.connect (dart:io-patch/socket_patch.dart:2275:26)
+#3      RawSocket.connect (dart:io-patch/socket_patch.dart:31:23)
+#4      Socket._connect (dart:io-patch/socket_patch.dart:2564:22)
+#5      Socket.connect (dart:io/socket.dart:869:21)
+#6      PgConnectionImplementation._connect (package:postgres/src/v3/connection.dart:278:31)
+#7      PgConnectionImplementation.connect (package:postgres/src/v3/connection.dart:222:35)
+#8      PoolImplementation._selectOrCreate.<anonymous closure> (package:postgres/src/pool/pool_impl.dart:205:42)
+#9      PackagePoolExt.withRequestTimeout (package:postgres/src/utils/package_pool_ext.dart:54:28)
+<asynchronous suspension>
+#10     PoolImplementation._selectOrCreate (package:postgres/src/pool/pool_impl.dart:188:12)
+<asynchronous suspension>
+#11     PoolImplementation.withConnection (package:postgres/src/pool/pool_impl.dart:146:20)
+<asynchronous suspension>
+#12     DatabaseConnection._query (package:serverpod/src/database/adapters/postgres/database_connection.dart:385:20)
+<asynchronous suspension>
+#13     DatabaseConnection._mappedResultsQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:482:18)
+<asynchronous suspension>
+#14     DatabaseConnection._deserializedMappedQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:515:18)
+<asynchronous suspension>
+#15     DatabaseConnection.deleteWhere (package:serverpod/src/database/adapters/postgres/database_connection.dart:291:12)
+<asynchronous suspension>
+#16     FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:71:23)
+<asynchronous suspension>
+
+Local stacktrace:
+#0      FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:94:36)
+<asynchronous suspension>
+
+2025-08-27 14:22:54.527909Z Internal server error. Failed to connect to database in future call manager.
+SocketException: Connection refused (OS Error: Connection refused, errno = 61), address = localhost, port = 59471
+#0      _NativeSocket.startConnect (dart:io-patch/socket_patch.dart:821:35)
+#1      _NativeSocket.connect (dart:io-patch/socket_patch.dart:1146:12)
+#2      _RawSocket.connect (dart:io-patch/socket_patch.dart:2275:26)
+#3      RawSocket.connect (dart:io-patch/socket_patch.dart:31:23)
+#4      Socket._connect (dart:io-patch/socket_patch.dart:2564:22)
+#5      Socket.connect (dart:io/socket.dart:869:21)
+#6      PgConnectionImplementation._connect (package:postgres/src/v3/connection.dart:278:31)
+#7      PgConnectionImplementation.connect (package:postgres/src/v3/connection.dart:222:35)
+#8      PoolImplementation._selectOrCreate.<anonymous closure> (package:postgres/src/pool/pool_impl.dart:205:42)
+#9      PackagePoolExt.withRequestTimeout (package:postgres/src/utils/package_pool_ext.dart:54:28)
+<asynchronous suspension>
+#10     PoolImplementation._selectOrCreate (package:postgres/src/pool/pool_impl.dart:188:12)
+<asynchronous suspension>
+#11     PoolImplementation.withConnection (package:postgres/src/pool/pool_impl.dart:146:20)
+<asynchronous suspension>
+#12     DatabaseConnection._query (package:serverpod/src/database/adapters/postgres/database_connection.dart:385:20)
+<asynchronous suspension>
+#13     DatabaseConnection._mappedResultsQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:482:18)
+<asynchronous suspension>
+#14     DatabaseConnection._deserializedMappedQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:515:18)
+<asynchronous suspension>
+#15     DatabaseConnection.deleteWhere (package:serverpod/src/database/adapters/postgres/database_connection.dart:291:12)
+<asynchronous suspension>
+#16     FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:71:23)
+<asynchronous suspension>
+
+Local stacktrace:
+#0      FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:94:36)
+<asynchronous suspension>
+
+2025-08-27 14:22:58.041417Z ERROR: Failed to reload runtime settings.
+2025-08-27 14:22:58.041417Z ERROR: SocketException: Connection refused (OS Error: Connection refused, errno = 61), address = localhost, port = 59481
+#0      _NativeSocket.startConnect (dart:io-patch/socket_patch.dart:821:35)
+#1      _NativeSocket.connect (dart:io-patch/socket_patch.dart:1146:12)
+#2      _RawSocket.connect (dart:io-patch/socket_patch.dart:2275:26)
+#3      RawSocket.connect (dart:io-patch/socket_patch.dart:31:23)
+#4      Socket._connect (dart:io-patch/socket_patch.dart:2564:22)
+#5      Socket.connect (dart:io/socket.dart:869:21)
+#6      PgConnectionImplementation._connect (package:postgres/src/v3/connection.dart:278:31)
+#7      PgConnectionImplementation.connect (package:postgres/src/v3/connection.dart:222:35)
+#8      PoolImplementation._selectOrCreate.<anonymous closure> (package:postgres/src/pool/pool_impl.dart:205:42)
+#9      PackagePoolExt.withRequestTimeout (package:postgres/src/utils/package_pool_ext.dart:54:28)
+<asynchronous suspension>
+#10     PoolImplementation._selectOrCreate (package:postgres/src/pool/pool_impl.dart:188:12)
+<asynchronous suspension>
+#11     PoolImplementation.withConnection (package:postgres/src/pool/pool_impl.dart:146:20)
+<asynchronous suspension>
+#12     DatabaseConnection._query (package:serverpod/src/database/adapters/postgres/database_connection.dart:385:20)
+<asynchronous suspension>
+#13     DatabaseConnection._mappedResultsQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:482:18)
+<asynchronous suspension>
+#14     DatabaseConnection._deserializedMappedQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:515:18)
+<asynchronous suspension>
+#15     DatabaseConnection.findFirstRow (package:serverpod/src/database/adapters/postgres/database_connection.dart:98:16)
+<asynchronous suspension>
+#16     Database.findFirstRow (package:serverpod/src/database/database.dart:97:12)
+<asynchronous suspension>
+#17     Serverpod.reloadRuntimeSettings (package:serverpod/src/server/serverpod.dart:277:11)
+<asynchronous suspension>
+#18     HealthCheckManager._innerPerformHealthCheck (package:serverpod/src/server/health_check_manager.dart:95:5)
+<asynchronous suspension>
+#19     HealthCheckManager._performHealthCheck (package:serverpod/src/server/health_check_manager.dart:57:7)
+<asynchronous suspension>
+
+2025-08-27 14:22:58.054402Z ERROR: Failed to cleanup closed sessions
+2025-08-27 14:22:58.054402Z ERROR: SocketException: Connection refused (OS Error: Connection refused, errno = 61), address = localhost, port = 59483
+#0      _NativeSocket.startConnect (dart:io-patch/socket_patch.dart:821:35)
+#1      _NativeSocket.connect (dart:io-patch/socket_patch.dart:1146:12)
+#2      _RawSocket.connect (dart:io-patch/socket_patch.dart:2275:26)
+#3      RawSocket.connect (dart:io-patch/socket_patch.dart:31:23)
+#4      Socket._connect (dart:io-patch/socket_patch.dart:2564:22)
+#5      Socket.connect (dart:io/socket.dart:869:21)
+#6      PgConnectionImplementation._connect (package:postgres/src/v3/connection.dart:278:31)
+#7      PgConnectionImplementation.connect (package:postgres/src/v3/connection.dart:222:35)
+#8      PoolImplementation._selectOrCreate.<anonymous closure> (package:postgres/src/pool/pool_impl.dart:205:42)
+#9      PackagePoolExt.withRequestTimeout (package:postgres/src/utils/package_pool_ext.dart:54:28)
+<asynchronous suspension>
+#10     PoolImplementation._selectOrCreate (package:postgres/src/pool/pool_impl.dart:188:12)
+<asynchronous suspension>
+#11     PoolImplementation.withConnection (package:postgres/src/pool/pool_impl.dart:146:20)
+<asynchronous suspension>
+#12     DatabaseConnection._query (package:serverpod/src/database/adapters/postgres/database_connection.dart:385:20)
+<asynchronous suspension>
+#13     DatabaseConnection.query (package:serverpod/src/database/adapters/postgres/database_connection.dart:354:18)
+<asynchronous suspension>
+#14     HealthCheckManager._cleanUpClosedSessions (package:serverpod/src/server/health_check_manager.dart:134:7)
+<asynchronous suspension>
+#15     HealthCheckManager._innerPerformHealthCheck (package:serverpod/src/server/health_check_manager.dart:97:5)
+<asynchronous suspension>
+#16     HealthCheckManager._performHealthCheck (package:serverpod/src/server/health_check_manager.dart:57:7)
+<asynchronous suspension>
+
+2025-08-27 14:22:58.067834Z ERROR: Failed to optimize health check data
+2025-08-27 14:22:58.067834Z ERROR: SocketException: Connection refused (OS Error: Connection refused, errno = 61), address = localhost, port = 59485
+#0      _NativeSocket.startConnect (dart:io-patch/socket_patch.dart:821:35)
+#1      _NativeSocket.connect (dart:io-patch/socket_patch.dart:1146:12)
+#2      _RawSocket.connect (dart:io-patch/socket_patch.dart:2275:26)
+#3      RawSocket.connect (dart:io-patch/socket_patch.dart:31:23)
+#4      Socket._connect (dart:io-patch/socket_patch.dart:2564:22)
+#5      Socket.connect (dart:io/socket.dart:869:21)
+#6      PgConnectionImplementation._connect (package:postgres/src/v3/connection.dart:278:31)
+#7      PgConnectionImplementation.connect (package:postgres/src/v3/connection.dart:222:35)
+#8      PoolImplementation._selectOrCreate.<anonymous closure> (package:postgres/src/pool/pool_impl.dart:205:42)
+#9      PackagePoolExt.withRequestTimeout (package:postgres/src/utils/package_pool_ext.dart:54:28)
+<asynchronous suspension>
+#10     PoolImplementation._selectOrCreate (package:postgres/src/pool/pool_impl.dart:188:12)
+<asynchronous suspension>
+#11     PoolImplementation.withConnection (package:postgres/src/pool/pool_impl.dart:146:20)
+<asynchronous suspension>
+#12     DatabaseConnection._query (package:serverpod/src/database/adapters/postgres/database_connection.dart:385:20)
+<asynchronous suspension>
+#13     DatabaseConnection._mappedResultsQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:482:18)
+<asynchronous suspension>
+#14     DatabaseConnection._deserializedMappedQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:515:18)
+<asynchronous suspension>
+#15     HealthCheckManager._optimizeConnectionInfoEntries (package:serverpod/src/server/health_check_manager.dart:206:19)
+<asynchronous suspension>
+#16     HealthCheckManager._optimizeHealthCheckData (package:serverpod/src/server/health_check_manager.dart:153:32)
+<asynchronous suspension>
+#17     HealthCheckManager._innerPerformHealthCheck (package:serverpod/src/server/health_check_manager.dart:99:5)
+<asynchronous suspension>
+#18     HealthCheckManager._performHealthCheck (package:serverpod/src/server/health_check_manager.dart:57:7)
+<asynchronous suspension>
+
+2025-08-27 14:22:59.529736Z Internal server error. Failed to connect to database in future call manager.
+SocketException: Connection refused (OS Error: Connection refused, errno = 61), address = localhost, port = 59487
+#0      _NativeSocket.startConnect (dart:io-patch/socket_patch.dart:821:35)
+#1      _NativeSocket.connect (dart:io-patch/socket_patch.dart:1146:12)
+#2      _RawSocket.connect (dart:io-patch/socket_patch.dart:2275:26)
+#3      RawSocket.connect (dart:io-patch/socket_patch.dart:31:23)
+#4      Socket._connect (dart:io-patch/socket_patch.dart:2564:22)
+#5      Socket.connect (dart:io/socket.dart:869:21)
+#6      PgConnectionImplementation._connect (package:postgres/src/v3/connection.dart:278:31)
+#7      PgConnectionImplementation.connect (package:postgres/src/v3/connection.dart:222:35)
+#8      PoolImplementation._selectOrCreate.<anonymous closure> (package:postgres/src/pool/pool_impl.dart:205:42)
+#9      PackagePoolExt.withRequestTimeout (package:postgres/src/utils/package_pool_ext.dart:54:28)
+<asynchronous suspension>
+#10     PoolImplementation._selectOrCreate (package:postgres/src/pool/pool_impl.dart:188:12)
+<asynchronous suspension>
+#11     PoolImplementation.withConnection (package:postgres/src/pool/pool_impl.dart:146:20)
+<asynchronous suspension>
+#12     DatabaseConnection._query (package:serverpod/src/database/adapters/postgres/database_connection.dart:385:20)
+<asynchronous suspension>
+#13     DatabaseConnection._mappedResultsQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:482:18)
+<asynchronous suspension>
+#14     DatabaseConnection._deserializedMappedQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:515:18)
+<asynchronous suspension>
+#15     DatabaseConnection.deleteWhere (package:serverpod/src/database/adapters/postgres/database_connection.dart:291:12)
+<asynchronous suspension>
+#16     FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:71:23)
+<asynchronous suspension>
+
+Local stacktrace:
+#0      FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:94:36)
+<asynchronous suspension>
+
+2025-08-27 14:23:04.527397Z Internal server error. Failed to connect to database in future call manager.
+SocketException: Connection refused (OS Error: Connection refused, errno = 61), address = localhost, port = 59500
+#0      _NativeSocket.startConnect (dart:io-patch/socket_patch.dart:821:35)
+#1      _NativeSocket.connect (dart:io-patch/socket_patch.dart:1146:12)
+#2      _RawSocket.connect (dart:io-patch/socket_patch.dart:2275:26)
+#3      RawSocket.connect (dart:io-patch/socket_patch.dart:31:23)
+#4      Socket._connect (dart:io-patch/socket_patch.dart:2564:22)
+#5      Socket.connect (dart:io/socket.dart:869:21)
+#6      PgConnectionImplementation._connect (package:postgres/src/v3/connection.dart:278:31)
+#7      PgConnectionImplementation.connect (package:postgres/src/v3/connection.dart:222:35)
+#8      PoolImplementation._selectOrCreate.<anonymous closure> (package:postgres/src/pool/pool_impl.dart:205:42)
+#9      PackagePoolExt.withRequestTimeout (package:postgres/src/utils/package_pool_ext.dart:54:28)
+<asynchronous suspension>
+#10     PoolImplementation._selectOrCreate (package:postgres/src/pool/pool_impl.dart:188:12)
+<asynchronous suspension>
+#11     PoolImplementation.withConnection (package:postgres/src/pool/pool_impl.dart:146:20)
+<asynchronous suspension>
+#12     DatabaseConnection._query (package:serverpod/src/database/adapters/postgres/database_connection.dart:385:20)
+<asynchronous suspension>
+#13     DatabaseConnection._mappedResultsQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:482:18)
+<asynchronous suspension>
+#14     DatabaseConnection._deserializedMappedQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:515:18)
+<asynchronous suspension>
+#15     DatabaseConnection.deleteWhere (package:serverpod/src/database/adapters/postgres/database_connection.dart:291:12)
+<asynchronous suspension>
+#16     FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:71:23)
+<asynchronous suspension>
+
+Local stacktrace:
+#0      FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:94:36)
+<asynchronous suspension>
+
+2025-08-27 14:23:09.526394Z Internal server error. Failed to connect to database in future call manager.
+SocketException: Connection refused (OS Error: Connection refused, errno = 61), address = localhost, port = 59510
+#0      _NativeSocket.startConnect (dart:io-patch/socket_patch.dart:821:35)
+#1      _NativeSocket.connect (dart:io-patch/socket_patch.dart:1146:12)
+#2      _RawSocket.connect (dart:io-patch/socket_patch.dart:2275:26)
+#3      RawSocket.connect (dart:io-patch/socket_patch.dart:31:23)
+#4      Socket._connect (dart:io-patch/socket_patch.dart:2564:22)
+#5      Socket.connect (dart:io/socket.dart:869:21)
+#6      PgConnectionImplementation._connect (package:postgres/src/v3/connection.dart:278:31)
+#7      PgConnectionImplementation.connect (package:postgres/src/v3/connection.dart:222:35)
+#8      PoolImplementation._selectOrCreate.<anonymous closure> (package:postgres/src/pool/pool_impl.dart:205:42)
+#9      PackagePoolExt.withRequestTimeout (package:postgres/src/utils/package_pool_ext.dart:54:28)
+<asynchronous suspension>
+#10     PoolImplementation._selectOrCreate (package:postgres/src/pool/pool_impl.dart:188:12)
+<asynchronous suspension>
+#11     PoolImplementation.withConnection (package:postgres/src/pool/pool_impl.dart:146:20)
+<asynchronous suspension>
+#12     DatabaseConnection._query (package:serverpod/src/database/adapters/postgres/database_connection.dart:385:20)
+<asynchronous suspension>
+#13     DatabaseConnection._mappedResultsQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:482:18)
+<asynchronous suspension>
+#14     DatabaseConnection._deserializedMappedQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:515:18)
+<asynchronous suspension>
+#15     DatabaseConnection.deleteWhere (package:serverpod/src/database/adapters/postgres/database_connection.dart:291:12)
+<asynchronous suspension>
+#16     FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:71:23)
+<asynchronous suspension>
+
+Local stacktrace:
+#0      FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:94:36)
+<asynchronous suspension>
+
+2025-08-27 14:23:14.526292Z Internal server error. Failed to connect to database in future call manager.
+SocketException: Connection refused (OS Error: Connection refused, errno = 61), address = localhost, port = 59526
+#0      _NativeSocket.startConnect (dart:io-patch/socket_patch.dart:821:35)
+#1      _NativeSocket.connect (dart:io-patch/socket_patch.dart:1146:12)
+#2      _RawSocket.connect (dart:io-patch/socket_patch.dart:2275:26)
+#3      RawSocket.connect (dart:io-patch/socket_patch.dart:31:23)
+#4      Socket._connect (dart:io-patch/socket_patch.dart:2564:22)
+#5      Socket.connect (dart:io/socket.dart:869:21)
+#6      PgConnectionImplementation._connect (package:postgres/src/v3/connection.dart:278:31)
+#7      PgConnectionImplementation.connect (package:postgres/src/v3/connection.dart:222:35)
+#8      PoolImplementation._selectOrCreate.<anonymous closure> (package:postgres/src/pool/pool_impl.dart:205:42)
+#9      PackagePoolExt.withRequestTimeout (package:postgres/src/utils/package_pool_ext.dart:54:28)
+<asynchronous suspension>
+#10     PoolImplementation._selectOrCreate (package:postgres/src/pool/pool_impl.dart:188:12)
+<asynchronous suspension>
+#11     PoolImplementation.withConnection (package:postgres/src/pool/pool_impl.dart:146:20)
+<asynchronous suspension>
+#12     DatabaseConnection._query (package:serverpod/src/database/adapters/postgres/database_connection.dart:385:20)
+<asynchronous suspension>
+#13     DatabaseConnection._mappedResultsQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:482:18)
+<asynchronous suspension>
+#14     DatabaseConnection._deserializedMappedQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:515:18)
+<asynchronous suspension>
+#15     DatabaseConnection.deleteWhere (package:serverpod/src/database/adapters/postgres/database_connection.dart:291:12)
+<asynchronous suspension>
+#16     FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:71:23)
+<asynchronous suspension>
+
+Local stacktrace:
+#0      FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:94:36)
+<asynchronous suspension>
+
+2025-08-27 14:23:19.526047Z Internal server error. Failed to connect to database in future call manager.
+SocketException: Connection refused (OS Error: Connection refused, errno = 61), address = localhost, port = 59532
+#0      _NativeSocket.startConnect (dart:io-patch/socket_patch.dart:821:35)
+#1      _NativeSocket.connect (dart:io-patch/socket_patch.dart:1146:12)
+#2      _RawSocket.connect (dart:io-patch/socket_patch.dart:2275:26)
+#3      RawSocket.connect (dart:io-patch/socket_patch.dart:31:23)
+#4      Socket._connect (dart:io-patch/socket_patch.dart:2564:22)
+#5      Socket.connect (dart:io/socket.dart:869:21)
+#6      PgConnectionImplementation._connect (package:postgres/src/v3/connection.dart:278:31)
+#7      PgConnectionImplementation.connect (package:postgres/src/v3/connection.dart:222:35)
+#8      PoolImplementation._selectOrCreate.<anonymous closure> (package:postgres/src/pool/pool_impl.dart:205:42)
+#9      PackagePoolExt.withRequestTimeout (package:postgres/src/utils/package_pool_ext.dart:54:28)
+<asynchronous suspension>
+#10     PoolImplementation._selectOrCreate (package:postgres/src/pool/pool_impl.dart:188:12)
+<asynchronous suspension>
+#11     PoolImplementation.withConnection (package:postgres/src/pool/pool_impl.dart:146:20)
+<asynchronous suspension>
+#12     DatabaseConnection._query (package:serverpod/src/database/adapters/postgres/database_connection.dart:385:20)
+<asynchronous suspension>
+#13     DatabaseConnection._mappedResultsQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:482:18)
+<asynchronous suspension>
+#14     DatabaseConnection._deserializedMappedQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:515:18)
+<asynchronous suspension>
+#15     DatabaseConnection.deleteWhere (package:serverpod/src/database/adapters/postgres/database_connection.dart:291:12)
+<asynchronous suspension>
+#16     FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:71:23)
+<asynchronous suspension>
+
+Local stacktrace:
+#0      FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:94:36)
+<asynchronous suspension>
+
+2025-08-27 14:23:24.528139Z Internal server error. Failed to connect to database in future call manager.
+SocketException: Connection refused (OS Error: Connection refused, errno = 61), address = localhost, port = 59539
+#0      _NativeSocket.startConnect (dart:io-patch/socket_patch.dart:821:35)
+#1      _NativeSocket.connect (dart:io-patch/socket_patch.dart:1146:12)
+#2      _RawSocket.connect (dart:io-patch/socket_patch.dart:2275:26)
+#3      RawSocket.connect (dart:io-patch/socket_patch.dart:31:23)
+#4      Socket._connect (dart:io-patch/socket_patch.dart:2564:22)
+#5      Socket.connect (dart:io/socket.dart:869:21)
+#6      PgConnectionImplementation._connect (package:postgres/src/v3/connection.dart:278:31)
+#7      PgConnectionImplementation.connect (package:postgres/src/v3/connection.dart:222:35)
+#8      PoolImplementation._selectOrCreate.<anonymous closure> (package:postgres/src/pool/pool_impl.dart:205:42)
+#9      PackagePoolExt.withRequestTimeout (package:postgres/src/utils/package_pool_ext.dart:54:28)
+<asynchronous suspension>
+#10     PoolImplementation._selectOrCreate (package:postgres/src/pool/pool_impl.dart:188:12)
+<asynchronous suspension>
+#11     PoolImplementation.withConnection (package:postgres/src/pool/pool_impl.dart:146:20)
+<asynchronous suspension>
+#12     DatabaseConnection._query (package:serverpod/src/database/adapters/postgres/database_connection.dart:385:20)
+<asynchronous suspension>
+#13     DatabaseConnection._mappedResultsQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:482:18)
+<asynchronous suspension>
+#14     DatabaseConnection._deserializedMappedQuery (package:serverpod/src/database/adapters/postgres/database_connection.dart:515:18)
+<asynchronous suspension>
+#15     DatabaseConnection.deleteWhere (package:serverpod/src/database/adapters/postgres/database_connection.dart:291:12)
+<asynchronous suspension>
+#16     FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:71:23)
+<asynchronous suspension>
+
+Local stacktrace:
+#0      FutureCallScanner.scanFutureCallEntries (package:serverpod/src/server/future_call_manager/future_call_scanner.dart:94:36)
+<asynchronous suspension>
+
+SIGTERM (15) received, time: 2025-08-27 14:27:58.013414Z
+SERVERPOD initiating shutdown, time: 2025-08-27 14:27:58.013751Z
+Server default stopped
+Insights stopped
+SERVERPOD shutdown completed, time: 2025-08-27 14:27:58.043787Z

@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../domain/model/image_model.dart';
+import 'server_image_widget.dart';
 
 /// A widget that allows users to drag and drop or select images
 class ImageDropBox extends StatelessWidget {
@@ -158,7 +159,14 @@ class ImageDropBox extends StatelessWidget {
   }
 
   Widget _buildImageWidget() {
-    if (image?.path != null) {
+    // For images from server, use ServerImageWidget to load and display
+    if (image?.isFromServer == true && image!.serverpodImageId != null) {
+      return ServerImageWidget(
+        imageId: image!.serverpodImageId!,
+        imageName: image!.name,
+        fit: BoxFit.cover,
+      );
+    } else if (image?.path != null) {
       return Image.file(
         File(image!.path!),
         fit: BoxFit.cover,

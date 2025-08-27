@@ -1,21 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../domain/repository/image_repository.dart';
 import '../bloc/image_editor_bloc.dart';
 import '../bloc/image_editor_event.dart';
 import '../bloc/image_editor_state.dart';
 import '../widget/image_drop_box.dart';
 import '../widget/instruction_text_field.dart';
 import '../widget/processor_dropdown.dart';
+import '../widget/server_status_widget.dart';
 
 /// Main screen for image editing functionality
 class ImageEditorScreen extends StatelessWidget {
-  const ImageEditorScreen({super.key});
+  final ImageRepository imageRepository;
+  
+  const ImageEditorScreen({
+    super.key,
+    required this.imageRepository,
+  });
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ImageEditorBloc(),
+      create: (context) => ImageEditorBloc(imageRepository),
       child: const _ImageEditorView(),
     );
   }
@@ -68,6 +75,12 @@ class _ImageEditorViewState extends State<_ImageEditorView> {
         appBar: AppBar(
           title: const Text('Image Editor'),
           backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
+          actions: const [
+            Padding(
+              padding: EdgeInsets.only(right: 16.0),
+              child: ServerStatusWidget(),
+            ),
+          ],
         ),
         body: LayoutBuilder(
           builder: (context, constraints) {
@@ -94,6 +107,7 @@ class _ImageEditorViewState extends State<_ImageEditorView> {
                                   child: ImageDropBox(
                                     label: 'Input Image',
                                     image: state.inputImage,
+                                    isProcessing: state.isProcessing,
                                     onImageChanged: (image) {
                                       context.read<ImageEditorBloc>().add(
                                         InputImageSelected(image),
@@ -119,6 +133,7 @@ class _ImageEditorViewState extends State<_ImageEditorView> {
                               ImageDropBox(
                                 label: 'Input Image',
                                 image: state.inputImage,
+                                isProcessing: state.isProcessing,
                                 onImageChanged: (image) {
                                   context.read<ImageEditorBloc>().add(
                                     InputImageSelected(image),

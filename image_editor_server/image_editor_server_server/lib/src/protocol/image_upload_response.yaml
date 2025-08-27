@@ -1,0 +1,6 @@
+class: ImageUploadResponse
+fields:
+  success: bool
+  imageId: int?
+  message: String?
+  filename: String?

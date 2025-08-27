@@ -1,0 +1,9 @@
+image:
+  - healthCheck:
+  - uploadImage:
+  - getImage:
+  - getImageFile:
+  - processImage:
+  - listImages:
+greeting:
+  - hello:
