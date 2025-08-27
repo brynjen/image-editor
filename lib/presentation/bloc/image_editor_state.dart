@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 
 import '../../domain/model/image_model.dart';
 import '../../domain/model/image_processor.dart';
+import '../../domain/model/processing_job_model.dart';
 
 /// State class for image editor
 class ImageEditorState extends Equatable {
@@ -10,6 +11,7 @@ class ImageEditorState extends Equatable {
   final ImageProcessor? selectedProcessor;
   final String instructions;
   final bool isProcessing;
+  final ProcessingJobModel? currentJob;
   final String? errorMessage;
 
   const ImageEditorState({
@@ -18,6 +20,7 @@ class ImageEditorState extends Equatable {
     this.selectedProcessor,
     this.instructions = '',
     this.isProcessing = false,
+    this.currentJob,
     this.errorMessage,
   });
 
@@ -35,7 +38,19 @@ class ImageEditorState extends Equatable {
       !isProcessing &&
       inputImage?.hasImage == true &&
       selectedProcessor != null &&
-      instructions.trim().isNotEmpty;
+      instructions.trim().isNotEmpty &&
+      (currentJob == null || currentJob!.isFinished);
+
+  /// Check if there's an active job running
+  bool get hasActiveJob => currentJob != null && currentJob!.isActive;
+
+  /// Get current processing status message
+  String? get processingStatus {
+    if (currentJob != null) {
+      return currentJob!.statusMessage;
+    }
+    return null;
+  }
 
   /// Copy state with new values
   ImageEditorState copyWith({
@@ -44,6 +59,7 @@ class ImageEditorState extends Equatable {
     ImageProcessor? selectedProcessor,
     String? instructions,
     bool? isProcessing,
+    ProcessingJobModel? currentJob,
     String? errorMessage,
   }) {
     return ImageEditorState(
@@ -52,14 +68,16 @@ class ImageEditorState extends Equatable {
       selectedProcessor: selectedProcessor ?? this.selectedProcessor,
       instructions: instructions ?? this.instructions,
       isProcessing: isProcessing ?? this.isProcessing,
+      currentJob: currentJob ?? this.currentJob,
       errorMessage: errorMessage ?? this.errorMessage,
     );
   }
 
-  /// Clear output image (used when input changes)
+  /// Clear output image and job (used when input changes)
   ImageEditorState clearOutput() {
     return copyWith(
       outputImage: null,
+      currentJob: null,
       errorMessage: null,
     );
   }
@@ -71,6 +89,7 @@ class ImageEditorState extends Equatable {
         selectedProcessor,
         instructions,
         isProcessing,
+        currentJob,
         errorMessage,
       ];
 }

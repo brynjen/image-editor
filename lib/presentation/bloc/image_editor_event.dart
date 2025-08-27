@@ -50,3 +50,23 @@ class ProcessImageRequested extends ImageEditorEvent {
 class OutputImageCleared extends ImageEditorEvent {
   const OutputImageCleared();
 }
+
+/// Event to poll job status
+class JobStatusPolled extends ImageEditorEvent {
+  final int jobId;
+
+  const JobStatusPolled(this.jobId);
+
+  @override
+  List<Object?> get props => [jobId];
+}
+
+/// Event when job status is updated
+class JobStatusUpdated extends ImageEditorEvent {
+  final int jobId;
+
+  const JobStatusUpdated(this.jobId);
+
+  @override
+  List<Object?> get props => [jobId];
+}

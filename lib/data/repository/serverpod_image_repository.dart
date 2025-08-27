@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:image_editor_server_client/image_editor_server_client.dart';
 import '../../domain/model/image_model.dart';
+import '../../domain/model/processing_job_model.dart';
 import '../../domain/repository/image_repository.dart';
 
 /// Serverpod implementation of the image repository
@@ -123,6 +124,65 @@ class ServerpodImageRepository implements ImageRepository {
       print('Error processing image: $e');
       return null;
     }
+  }
+
+  @override
+  Future<ProcessingJobModel?> processImageAsync(
+    int imageId,
+    String processorType,
+    String instructions,
+  ) async {
+    try {
+      print('ServerpodImageRepository: Starting async processing for image $imageId');
+      
+      final request = ImageProcessRequest(
+        imageId: imageId,
+        processorType: processorType,
+        instructions: instructions,
+      );
+      
+      final job = await _client.image.processImageAsync(request);
+      
+      return _mapProcessingJobFromServerpod(job);
+    } catch (e) {
+      print('Error starting async image processing: $e');
+      return null;
+    }
+  }
+
+  @override
+  Future<ProcessingJobModel?> getJobStatus(int jobId) async {
+    try {
+      print('ServerpodImageRepository: Getting job status for job $jobId');
+      
+      // TODO: Use the correct Serverpod client method once generated
+      // For now, create a mock job to prevent compilation errors
+      // This will need to be updated when the Serverpod client is regenerated
+      await Future.delayed(const Duration(milliseconds: 100)); // Simulate network call
+      
+      // Return null for now - this will be implemented once the client is updated
+      return null;
+    } catch (e) {
+      print('Error getting job status: $e');
+      return null;
+    }
+  }
+
+  /// Map Serverpod ProcessingJob to domain ProcessingJobModel
+  ProcessingJobModel _mapProcessingJobFromServerpod(ProcessingJob job) {
+    return ProcessingJobModel(
+      id: job.id!,
+      imageId: job.imageId,
+      status: job.status,
+      processorType: job.processorType,
+      instructions: job.instructions,
+      createdAt: job.createdAt,
+      startedAt: job.startedAt,
+      completedAt: job.completedAt,
+      progress: job.progress,
+      resultImageId: job.resultImageId,
+      errorMessage: job.errorMessage,
+    );
   }
 
   @override

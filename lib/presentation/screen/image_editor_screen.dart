@@ -7,6 +7,7 @@ import '../bloc/image_editor_event.dart';
 import '../bloc/image_editor_state.dart';
 import '../widget/image_drop_box.dart';
 import '../widget/instruction_text_field.dart';
+import '../widget/job_status_widget.dart';
 import '../widget/processor_dropdown.dart';
 import '../widget/server_status_widget.dart';
 
@@ -62,7 +63,7 @@ class _ImageEditorViewState extends State<_ImageEditorView> {
               backgroundColor: Colors.red,
             ),
           );
-        } else if (!state.isProcessing && state.outputImage != null) {
+        } else if (state.currentJob?.isCompleted == true && state.outputImage != null) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Image processing completed!'),
@@ -208,6 +209,19 @@ class _ImageEditorViewState extends State<_ImageEditorView> {
                           ),
                         const SizedBox(height: 32),
                         
+                        // Job status widget
+                        JobStatusWidget(
+                          job: state.currentJob,
+                          onCancel: state.hasActiveJob
+                              ? () {
+                                  // TODO: Implement job cancellation
+                                  context.read<ImageEditorBloc>().add(
+                                    const OutputImageCleared(),
+                                  );
+                                }
+                              : null,
+                        ),
+                        
                         // Process button
                         Center(
                           child: SizedBox(
@@ -237,9 +251,9 @@ class _ImageEditorViewState extends State<_ImageEditorView> {
                                         color: Colors.white,
                                       ),
                                     )
-                                  : const Text(
-                                      'Process Image',
-                                      style: TextStyle(
+                                  : Text(
+                                      state.hasActiveJob ? 'Processing...' : 'Start Processing',
+                                      style: const TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w600,
                                       ),
