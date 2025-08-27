@@ -25,9 +25,9 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - MODEL_NAME=Qwen/Qwen-Image-Edit
+      - MODEL_NAME=DFloat11/Qwen-Image-Edit-DF11  # Compressed version (32% smaller)
       - DEVICE=cpu  # Use 'cuda' if GPU is available
-      - MAX_CONCURRENT_REQUESTS=2
+      - MAX_CONCURRENT_REQUESTS=1  # Reduce concurrent requests to save memory
       - HF_HOME=/app/hf_cache  # HuggingFace cache directory
       - TRANSFORMERS_CACHE=/app/hf_cache
       - HF_DATASETS_CACHE=/app/hf_cache
