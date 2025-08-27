@@ -16,6 +16,7 @@ Should allow user to drag and drop images, enter text and hit a button for proce
 - Use Flutter for all frontend components.
 - Use dart/Serverpod for all backend components.
 - Never more than one class per file
+- Frontend navigation uses go_router
 - Use comments sparingly - only for complex logic. Attach comments to function or class, never inside method.
 - Prioritize readability and maintainability.
 - Use english for all comments and all naming
@@ -38,3 +39,4 @@ Should allow user to drag and drop images, enter text and hit a button for proce
     * presentation/screen - Screen level widgets
     * presentation/bloc - blocs and similar states
     * presentation/widget - all simple or complex widgets used in screens
+    * presentation/theme - all theming of widgets
