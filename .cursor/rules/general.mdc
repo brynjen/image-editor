@@ -17,6 +17,7 @@ Should allow user to drag and drop images, enter text and hit a button for proce
 - Use dart/Serverpod for all backend components.
 - Never more than one class per file
 - Frontend navigation uses go_router
+- Frontend state management should utilize Bloc
 - Use comments sparingly - only for complex logic. Attach comments to function or class, never inside method.
 - Prioritize readability and maintainability.
 - Use english for all comments and all naming
