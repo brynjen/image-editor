@@ -14,11 +14,17 @@ import 'greeting.dart' as _i2;
 import 'image_data.dart' as _i3;
 import 'image_process_request.dart' as _i4;
 import 'image_upload_response.dart' as _i5;
-import 'package:image_editor_server_client/src/protocol/image_data.dart' as _i6;
+import 'job_status_response.dart' as _i6;
+import 'processing_job.dart' as _i7;
+import 'package:image_editor_server_client/src/protocol/image_data.dart' as _i8;
+import 'package:image_editor_server_client/src/protocol/processing_job.dart'
+    as _i9;
 export 'greeting.dart';
 export 'image_data.dart';
 export 'image_process_request.dart';
 export 'image_upload_response.dart';
+export 'job_status_response.dart';
+export 'processing_job.dart';
 export 'client.dart';
 
 class Protocol extends _i1.SerializationManager {
@@ -46,6 +52,12 @@ class Protocol extends _i1.SerializationManager {
     if (t == _i5.ImageUploadResponse) {
       return _i5.ImageUploadResponse.fromJson(data) as T;
     }
+    if (t == _i6.JobStatusResponse) {
+      return _i6.JobStatusResponse.fromJson(data) as T;
+    }
+    if (t == _i7.ProcessingJob) {
+      return _i7.ProcessingJob.fromJson(data) as T;
+    }
     if (t == _i1.getType<_i2.Greeting?>()) {
       return (data != null ? _i2.Greeting.fromJson(data) : null) as T;
     }
@@ -60,9 +72,24 @@ class Protocol extends _i1.SerializationManager {
       return (data != null ? _i5.ImageUploadResponse.fromJson(data) : null)
           as T;
     }
-    if (t == List<_i6.ImageData>) {
-      return (data as List).map((e) => deserialize<_i6.ImageData>(e)).toList()
+    if (t == _i1.getType<_i6.JobStatusResponse?>()) {
+      return (data != null ? _i6.JobStatusResponse.fromJson(data) : null) as T;
+    }
+    if (t == _i1.getType<_i7.ProcessingJob?>()) {
+      return (data != null ? _i7.ProcessingJob.fromJson(data) : null) as T;
+    }
+    if (t == Map<String, dynamic>) {
+      return (data as Map).map((k, v) =>
+          MapEntry(deserialize<String>(k), deserialize<dynamic>(v))) as T;
+    }
+    if (t == List<_i8.ImageData>) {
+      return (data as List).map((e) => deserialize<_i8.ImageData>(e)).toList()
           as T;
+    }
+    if (t == List<_i9.ProcessingJob>) {
+      return (data as List)
+          .map((e) => deserialize<_i9.ProcessingJob>(e))
+          .toList() as T;
     }
     return super.deserialize<T>(data, t);
   }
@@ -82,6 +109,12 @@ class Protocol extends _i1.SerializationManager {
     }
     if (data is _i5.ImageUploadResponse) {
       return 'ImageUploadResponse';
+    }
+    if (data is _i6.JobStatusResponse) {
+      return 'JobStatusResponse';
+    }
+    if (data is _i7.ProcessingJob) {
+      return 'ProcessingJob';
     }
     return null;
   }
@@ -103,6 +136,12 @@ class Protocol extends _i1.SerializationManager {
     }
     if (dataClassName == 'ImageUploadResponse') {
       return deserialize<_i5.ImageUploadResponse>(data['data']);
+    }
+    if (dataClassName == 'JobStatusResponse') {
+      return deserialize<_i6.JobStatusResponse>(data['data']);
+    }
+    if (dataClassName == 'ProcessingJob') {
+      return deserialize<_i7.ProcessingJob>(data['data']);
     }
     return super.deserializeByClassName(data);
   }

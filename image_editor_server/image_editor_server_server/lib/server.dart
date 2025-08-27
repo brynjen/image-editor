@@ -1,4 +1,5 @@
 import 'package:image_editor_server_server/src/birthday_reminder.dart';
+import 'package:image_editor_server_server/src/image_processing_future_call.dart';
 import 'package:serverpod/serverpod.dart';
 
 import 'package:image_editor_server_server/src/web/routes/root.dart';
@@ -38,6 +39,12 @@ void run(List<String> args) async {
     FutureCallNames.birthdayReminder.name,
   );
 
+  // Register image processing future call
+  pod.registerFutureCall(
+    ImageProcessingFutureCall(),
+    FutureCallNames.imageProcessing.name,
+  );
+
   // You can schedule future calls for a later time during startup. But you can
   // also schedule them in any endpoint or webroute through the session object.
   // there is also [futureCallAtTime] if you want to schedule a future call at a
@@ -57,4 +64,4 @@ void run(List<String> args) async {
 ///
 /// This is better than using a string literal, as it will reduce the risk of
 /// typos and make it easier to refactor the code.
-enum FutureCallNames { birthdayReminder }
+enum FutureCallNames { birthdayReminder, imageProcessing }

@@ -18,9 +18,13 @@ import 'package:image_editor_server_server/src/generated/image_upload_response.d
     as _i4;
 import 'package:image_editor_server_server/src/generated/image_data.dart'
     as _i5;
-import 'package:image_editor_server_server/src/generated/image_process_request.dart'
+import 'package:image_editor_server_server/src/generated/processing_job.dart'
     as _i6;
-import 'package:image_editor_server_server/src/generated/greeting.dart' as _i7;
+import 'package:image_editor_server_server/src/generated/image_process_request.dart'
+    as _i7;
+import 'package:image_editor_server_server/src/generated/job_status_response.dart'
+    as _i8;
+import 'package:image_editor_server_server/src/generated/greeting.dart' as _i9;
 import 'package:image_editor_server_server/src/generated/protocol.dart';
 import 'package:image_editor_server_server/src/generated/endpoints.dart';
 export 'package:serverpod_test/serverpod_test_public_exports.dart';
@@ -109,6 +113,8 @@ void withServerpod(
 class TestEndpoints {
   late final _ImageEndpoint image;
 
+  late final _JobEndpoint job;
+
   late final _GreetingEndpoint greeting;
 }
 
@@ -120,6 +126,10 @@ class _InternalTestEndpoints extends TestEndpoints
     _i2.EndpointDispatch endpoints,
   ) {
     image = _ImageEndpoint(
+      endpoints,
+      serializationManager,
+    );
+    job = _JobEndpoint(
       endpoints,
       serializationManager,
     );
@@ -159,6 +169,33 @@ class _ImageEndpoint {
           _localUniqueSession,
           _localCallContext.arguments,
         ) as _i3.Future<String>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _i3.Future<Map<String, dynamic>> checkQwenHealth(
+      _i1.TestSessionBuilder sessionBuilder) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+        endpoint: 'image',
+        method: 'checkQwenHealth',
+      );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'image',
+          methodName: 'checkQwenHealth',
+          parameters: _i1.testObjectToJson({}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue = await (_localCallContext.method.call(
+          _localUniqueSession,
+          _localCallContext.arguments,
+        ) as _i3.Future<Map<String, dynamic>>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -261,9 +298,38 @@ class _ImageEndpoint {
     });
   }
 
+  _i3.Future<_i6.ProcessingJob> processImageAsync(
+    _i1.TestSessionBuilder sessionBuilder,
+    _i7.ImageProcessRequest request,
+  ) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+        endpoint: 'image',
+        method: 'processImageAsync',
+      );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'image',
+          methodName: 'processImageAsync',
+          parameters: _i1.testObjectToJson({'request': request}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue = await (_localCallContext.method.call(
+          _localUniqueSession,
+          _localCallContext.arguments,
+        ) as _i3.Future<_i6.ProcessingJob>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
   _i3.Future<_i4.ImageUploadResponse> processImage(
     _i1.TestSessionBuilder sessionBuilder,
-    _i6.ImageProcessRequest request,
+    _i7.ImageProcessRequest request,
   ) async {
     return _i1.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
@@ -318,6 +384,195 @@ class _ImageEndpoint {
   }
 }
 
+class _JobEndpoint {
+  _JobEndpoint(
+    this._endpointDispatch,
+    this._serializationManager,
+  );
+
+  final _i2.EndpointDispatch _endpointDispatch;
+
+  final _i2.SerializationManager _serializationManager;
+
+  _i3.Future<_i6.ProcessingJob> createProcessingJob(
+    _i1.TestSessionBuilder sessionBuilder,
+    int imageId,
+    String processorType,
+    String instructions,
+  ) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+        endpoint: 'job',
+        method: 'createProcessingJob',
+      );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'job',
+          methodName: 'createProcessingJob',
+          parameters: _i1.testObjectToJson({
+            'imageId': imageId,
+            'processorType': processorType,
+            'instructions': instructions,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue = await (_localCallContext.method.call(
+          _localUniqueSession,
+          _localCallContext.arguments,
+        ) as _i3.Future<_i6.ProcessingJob>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _i3.Future<_i8.JobStatusResponse?> getJobStatus(
+    _i1.TestSessionBuilder sessionBuilder,
+    int jobId,
+  ) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+        endpoint: 'job',
+        method: 'getJobStatus',
+      );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'job',
+          methodName: 'getJobStatus',
+          parameters: _i1.testObjectToJson({'jobId': jobId}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue = await (_localCallContext.method.call(
+          _localUniqueSession,
+          _localCallContext.arguments,
+        ) as _i3.Future<_i8.JobStatusResponse?>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _i3.Future<_i5.ImageData?> getJobResult(
+    _i1.TestSessionBuilder sessionBuilder,
+    int jobId,
+  ) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+        endpoint: 'job',
+        method: 'getJobResult',
+      );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'job',
+          methodName: 'getJobResult',
+          parameters: _i1.testObjectToJson({'jobId': jobId}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue = await (_localCallContext.method.call(
+          _localUniqueSession,
+          _localCallContext.arguments,
+        ) as _i3.Future<_i5.ImageData?>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _i3.Future<bool> cancelJob(
+    _i1.TestSessionBuilder sessionBuilder,
+    int jobId,
+  ) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+        endpoint: 'job',
+        method: 'cancelJob',
+      );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'job',
+          methodName: 'cancelJob',
+          parameters: _i1.testObjectToJson({'jobId': jobId}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue = await (_localCallContext.method.call(
+          _localUniqueSession,
+          _localCallContext.arguments,
+        ) as _i3.Future<bool>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _i3.Future<List<_i6.ProcessingJob>> listJobs(
+    _i1.TestSessionBuilder sessionBuilder, {
+    required int limit,
+  }) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+        endpoint: 'job',
+        method: 'listJobs',
+      );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'job',
+          methodName: 'listJobs',
+          parameters: _i1.testObjectToJson({'limit': limit}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue = await (_localCallContext.method.call(
+          _localUniqueSession,
+          _localCallContext.arguments,
+        ) as _i3.Future<List<_i6.ProcessingJob>>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _i3.Future<Map<String, dynamic>> getProcessingStats(
+      _i1.TestSessionBuilder sessionBuilder) async {
+    return _i1.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _i1.InternalTestSessionBuilder).internalBuild(
+        endpoint: 'job',
+        method: 'getProcessingStats',
+      );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'job',
+          methodName: 'getProcessingStats',
+          parameters: _i1.testObjectToJson({}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue = await (_localCallContext.method.call(
+          _localUniqueSession,
+          _localCallContext.arguments,
+        ) as _i3.Future<Map<String, dynamic>>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+}
+
 class _GreetingEndpoint {
   _GreetingEndpoint(
     this._endpointDispatch,
@@ -328,7 +583,7 @@ class _GreetingEndpoint {
 
   final _i2.SerializationManager _serializationManager;
 
-  _i3.Future<_i7.Greeting> hello(
+  _i3.Future<_i9.Greeting> hello(
     _i1.TestSessionBuilder sessionBuilder,
     String name,
   ) async {
@@ -349,7 +604,7 @@ class _GreetingEndpoint {
         var _localReturnValue = await (_localCallContext.method.call(
           _localUniqueSession,
           _localCallContext.arguments,
-        ) as _i3.Future<_i7.Greeting>);
+        ) as _i3.Future<_i9.Greeting>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();

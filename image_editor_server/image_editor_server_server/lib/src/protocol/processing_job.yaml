@@ -1,0 +1,15 @@
+class: ProcessingJob
+table: processing_jobs
+fields:
+  id: int?, defaultPersist=serial
+  imageId: int
+  status: String, default='pending'
+  processorType: String
+  instructions: String
+  createdAt: DateTime, default=now
+  startedAt: DateTime?
+  completedAt: DateTime?
+  errorMessage: String?
+  processingTimeMs: int?
+  resultImageId: int?
+  progress: double, default=0.0

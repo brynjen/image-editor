@@ -19,6 +19,29 @@ services:
     environment:
       - REDIS_REPLICATION_MODE=master
 
+  # Qwen Image Edit service
+  qwen-image-edit:
+    build: ../../qwen-image-edit
+    ports:
+      - "8000:8000"
+    environment:
+      - MODEL_NAME=Qwen/Qwen-Image-Edit
+      - DEVICE=cpu  # Use 'cuda' if GPU is available
+      - MAX_CONCURRENT_REQUESTS=2
+      - HF_HOME=/app/hf_cache  # HuggingFace cache directory
+      - TRANSFORMERS_CACHE=/app/hf_cache
+      - HF_DATASETS_CACHE=/app/hf_cache
+    volumes:
+      - ../../qwen-models-cache:/app/hf_cache  # Map to local project folder
+      - qwen_app_cache:/app/cache
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 300s  # Allow more time for large model loading (5 minutes)
+    restart: unless-stopped
+
   # Test services
   postgres_test:
     image: pgvector/pgvector:pg16
@@ -42,3 +65,4 @@ services:
 volumes:
   image_editor_server_data:
   image_editor_server_test_data:
+  qwen_app_cache:

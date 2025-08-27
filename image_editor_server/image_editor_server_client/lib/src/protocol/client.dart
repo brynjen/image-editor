@@ -14,10 +14,14 @@ import 'dart:async' as _i2;
 import 'package:image_editor_server_client/src/protocol/image_upload_response.dart'
     as _i3;
 import 'package:image_editor_server_client/src/protocol/image_data.dart' as _i4;
-import 'package:image_editor_server_client/src/protocol/image_process_request.dart'
+import 'package:image_editor_server_client/src/protocol/processing_job.dart'
     as _i5;
-import 'package:image_editor_server_client/src/protocol/greeting.dart' as _i6;
-import 'protocol.dart' as _i7;
+import 'package:image_editor_server_client/src/protocol/image_process_request.dart'
+    as _i6;
+import 'package:image_editor_server_client/src/protocol/job_status_response.dart'
+    as _i7;
+import 'package:image_editor_server_client/src/protocol/greeting.dart' as _i8;
+import 'protocol.dart' as _i9;
 
 /// Endpoint for handling image upload and retrieval operations
 /// {@category Endpoint}
@@ -31,6 +35,14 @@ class EndpointImage extends _i1.EndpointRef {
   _i2.Future<String> healthCheck() => caller.callServerEndpoint<String>(
         'image',
         'healthCheck',
+        {},
+      );
+
+  /// Check Qwen Image Edit service health
+  _i2.Future<Map<String, dynamic>> checkQwenHealth() =>
+      caller.callServerEndpoint<Map<String, dynamic>>(
+        'image',
+        'checkQwenHealth',
         {},
       );
 
@@ -68,9 +80,19 @@ class EndpointImage extends _i1.EndpointRef {
         {'imageId': imageId},
       );
 
-  /// Process an image with given instructions
+  /// Create an async processing job for an image
+  _i2.Future<_i5.ProcessingJob> processImageAsync(
+          _i6.ImageProcessRequest request) =>
+      caller.callServerEndpoint<_i5.ProcessingJob>(
+        'image',
+        'processImageAsync',
+        {'request': request},
+      );
+
+  /// Process an image with given instructions using Qwen Image Edit service (synchronous - deprecated)
+  /// Use processImageAsync for better performance and user experience
   _i2.Future<_i3.ImageUploadResponse> processImage(
-          _i5.ImageProcessRequest request) =>
+          _i6.ImageProcessRequest request) =>
       caller.callServerEndpoint<_i3.ImageUploadResponse>(
         'image',
         'processImage',
@@ -86,6 +108,70 @@ class EndpointImage extends _i1.EndpointRef {
       );
 }
 
+/// Endpoint for managing image processing jobs
+/// {@category Endpoint}
+class EndpointJob extends _i1.EndpointRef {
+  EndpointJob(_i1.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'job';
+
+  /// Create a new image processing job
+  _i2.Future<_i5.ProcessingJob> createProcessingJob(
+    int imageId,
+    String processorType,
+    String instructions,
+  ) =>
+      caller.callServerEndpoint<_i5.ProcessingJob>(
+        'job',
+        'createProcessingJob',
+        {
+          'imageId': imageId,
+          'processorType': processorType,
+          'instructions': instructions,
+        },
+      );
+
+  /// Get job status
+  _i2.Future<_i7.JobStatusResponse?> getJobStatus(int jobId) =>
+      caller.callServerEndpoint<_i7.JobStatusResponse?>(
+        'job',
+        'getJobStatus',
+        {'jobId': jobId},
+      );
+
+  /// Get job result (processed image data)
+  _i2.Future<_i4.ImageData?> getJobResult(int jobId) =>
+      caller.callServerEndpoint<_i4.ImageData?>(
+        'job',
+        'getJobResult',
+        {'jobId': jobId},
+      );
+
+  /// Cancel a pending job
+  _i2.Future<bool> cancelJob(int jobId) => caller.callServerEndpoint<bool>(
+        'job',
+        'cancelJob',
+        {'jobId': jobId},
+      );
+
+  /// List user's jobs (for now, all jobs)
+  _i2.Future<List<_i5.ProcessingJob>> listJobs({required int limit}) =>
+      caller.callServerEndpoint<List<_i5.ProcessingJob>>(
+        'job',
+        'listJobs',
+        {'limit': limit},
+      );
+
+  /// Get processing statistics
+  _i2.Future<Map<String, dynamic>> getProcessingStats() =>
+      caller.callServerEndpoint<Map<String, dynamic>>(
+        'job',
+        'getProcessingStats',
+        {},
+      );
+}
+
 /// This is an example endpoint that returns a greeting message through
 /// its [hello] method.
 /// {@category Endpoint}
@@ -96,8 +182,8 @@ class EndpointGreeting extends _i1.EndpointRef {
   String get name => 'greeting';
 
   /// Returns a personalized greeting message: "Hello {name}".
-  _i2.Future<_i6.Greeting> hello(String name) =>
-      caller.callServerEndpoint<_i6.Greeting>(
+  _i2.Future<_i8.Greeting> hello(String name) =>
+      caller.callServerEndpoint<_i8.Greeting>(
         'greeting',
         'hello',
         {'name': name},
@@ -120,7 +206,7 @@ class Client extends _i1.ServerpodClientShared {
     bool? disconnectStreamsOnLostInternetConnection,
   }) : super(
           host,
-          _i7.Protocol(),
+          _i9.Protocol(),
           securityContext: securityContext,
           authenticationKeyManager: authenticationKeyManager,
           streamingConnectionTimeout: streamingConnectionTimeout,
@@ -131,16 +217,20 @@ class Client extends _i1.ServerpodClientShared {
               disconnectStreamsOnLostInternetConnection,
         ) {
     image = EndpointImage(this);
+    job = EndpointJob(this);
     greeting = EndpointGreeting(this);
   }
 
   late final EndpointImage image;
+
+  late final EndpointJob job;
 
   late final EndpointGreeting greeting;
 
   @override
   Map<String, _i1.EndpointRef> get endpointRefLookup => {
         'image': image,
+        'job': job,
         'greeting': greeting,
       };
 

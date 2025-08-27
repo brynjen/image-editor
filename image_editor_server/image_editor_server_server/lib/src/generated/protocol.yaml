@@ -1,9 +1,18 @@
 image:
   - healthCheck:
+  - checkQwenHealth:
   - uploadImage:
   - getImage:
   - getImageFile:
+  - processImageAsync:
   - processImage:
   - listImages:
+job:
+  - createProcessingJob:
+  - getJobStatus:
+  - getJobResult:
+  - cancelJob:
+  - listJobs:
+  - getProcessingStats:
 greeting:
   - hello:

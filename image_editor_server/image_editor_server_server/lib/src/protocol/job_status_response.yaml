@@ -1,0 +1,11 @@
+class: JobStatusResponse
+fields:
+  jobId: int
+  status: String
+  progress: double
+  message: String?
+  resultImageId: int?
+  processingTimeMs: int?
+  createdAt: DateTime
+  startedAt: DateTime?
+  completedAt: DateTime?
