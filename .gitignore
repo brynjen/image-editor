@@ -30,3 +30,4 @@ doc/api/
 
 # Prevent committing the model downloaded
 qwen-models-cache/
+*.log
