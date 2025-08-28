@@ -6,8 +6,16 @@ This document outlines the implementation plan for integrating **DFloat11 compre
 
 ## Architecture
 
+### Local Processing (Limited)
 ```
-Flutter App → Serverpod Backend → qwen-image-edit Docker Container → Processed Image → Storage → Client
+Flutter App → Serverpod Backend → qwen-image-edit Docker Container (Local) → Processed Image → Storage → Client
+```
+
+### Remote GPU Processing (Recommended)
+```
+Flutter App → Serverpod Backend → HTTP Request → Remote GPU Server (RTX 4090) → Processed Image → Storage → Client
+                                        ↓
+                                qwen-image-edit Docker Container (DFloat11 + CUDA)
 ```
 
 ### Current State
@@ -47,6 +55,24 @@ Flutter App → Serverpod Backend → qwen-image-edit Docker Container → Proce
 ### Model Components
 - **Base Model**: `Qwen/Qwen-Image-Edit` (config and pipeline components)
 - **Compressed Weights**: `DFloat11/Qwen-Image-Edit-DF11` (compressed transformer weights)
+
+## Remote GPU Configuration
+
+### Development Setup
+- **Mac Development Machine**: 32GB RAM (insufficient for DFloat11 model)
+- **Remote GPU Server**: RTX 4090 24GB VRAM + 64GB+ RAM (optimal for DFloat11)
+- **Network**: Local network connection between development machine and GPU server
+
+### Configuration Options
+1. **Environment Variables**: Set `AI_SERVICE_HOST`, `AI_SERVICE_PORT`, `AI_SERVICE_SCHEME`
+2. **Config File**: Update `config/development.yaml` with remote server details
+3. **Runtime Configuration**: Use `./configure-remote-ai.sh` script for easy setup
+
+### Benefits
+- **Optimal Performance**: RTX 4090 provides ~4x faster processing than CPU
+- **Development Flexibility**: Keep development environment on Mac, processing on GPU server
+- **Resource Efficiency**: No need to run large model locally during development
+- **Scalability**: Easy to add multiple GPU servers or cloud instances
 
 ### Download Scripts
 - **`monitor-dfloat11-download.sh`**: All-in-one download, monitoring, and testing script

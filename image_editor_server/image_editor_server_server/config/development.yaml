@@ -46,6 +46,19 @@ redis:
 
 maxRequestSize: 10485760 # The maximum size of requests allowed in bytes (10MB)
 
+# AI Service Configuration
+aiService:
+  # Default to localhost for development, can be overridden with environment variables
+  host: localhost
+  port: 8000
+  scheme: http
+  # Health check settings
+  healthCheckPath: /health
+  timeout: 30000 # 30 seconds timeout for AI processing
+  # Connection settings
+  maxRetries: 3
+  retryDelay: 1000 # 1 second between retries
+
 sessionLogs:
   persistentEnabled: true
   consoleEnabled: true

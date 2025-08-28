@@ -7,14 +7,15 @@ import '../services/job_processing_service.dart';
 
 /// Endpoint for handling image upload and retrieval operations
 class ImageEndpoint extends Endpoint {
-  late final QwenImageService _qwenImageService;
-  late final JobProcessingService _jobProcessingService;
 
-  @override
-  void initialize(Server server, String name, String? moduleName) {
-    super.initialize(server, name, moduleName);
-    _qwenImageService = QwenImageService();
-    _jobProcessingService = JobProcessingService(_qwenImageService);
+  /// Get or initialize the QwenImageService with session configuration
+  QwenImageService _getQwenImageService(Session session) {
+    return QwenImageService.fromConfig(session);
+  }
+
+  /// Get or initialize the JobProcessingService with session configuration
+  JobProcessingService _getJobProcessingService(Session session) {
+    return JobProcessingService(_getQwenImageService(session));
   }
   /// Health check endpoint to verify server connectivity
   Future<String> healthCheck(Session session) async {
@@ -26,8 +27,9 @@ class ImageEndpoint extends Endpoint {
   Future<Map<String, dynamic>> checkQwenHealth(Session session) async {
     session.log('Qwen health check requested');
     try {
-      final isHealthy = await _qwenImageService.isHealthy();
-      final models = await _qwenImageService.getModels();
+      final qwenService = _getQwenImageService(session);
+      final isHealthy = await qwenService.isHealthy();
+      final models = await qwenService.getModels();
       
       return {
         'qwen_service_healthy': isHealthy,
@@ -151,7 +153,8 @@ class ImageEndpoint extends Endpoint {
       }
 
       // Create the processing job
-      final job = await _jobProcessingService.createJob(
+      final jobService = _getJobProcessingService(session);
+      final job = await jobService.createJob(
         session: session,
         imageId: request.imageId,
         processorType: request.processorType,
@@ -209,8 +212,9 @@ class ImageEndpoint extends Endpoint {
         );
       }
 
-      // Check if Qwen service is healthy
-      final isHealthy = await _qwenImageService.isHealthy();
+      // Get Qwen service and check if healthy
+      final qwenService = _getQwenImageService(session);
+      final isHealthy = await qwenService.isHealthy();
       if (!isHealthy) {
         session.log('Qwen Image service is not healthy, falling back to copy');
         // Fallback: just copy the original image
@@ -224,7 +228,7 @@ class ImageEndpoint extends Endpoint {
       session.log('Sending image to Qwen service for processing');
       
       // Process the image using Qwen service
-      final result = await _qwenImageService.processImage(
+      final result = await qwenService.processImage(
         imageBase64: imageBase64,
         prompt: request.instructions,
         model: request.processorType,

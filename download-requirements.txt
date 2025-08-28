@@ -1,0 +1,6 @@
+# Requirements for downloading DFloat11 models
+# Install with: pip install -r download-requirements.txt
+
+huggingface_hub>=0.20.0
+torch>=2.0.0
+transformers>=4.37.0

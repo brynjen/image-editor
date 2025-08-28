@@ -39,11 +39,20 @@ flutter pub get
 flutter run
 ```
 
-### 4. Download AI Model (Optional - for AI processing)
+### 4. Setup AI Processing (Optional - for AI image editing)
+
+**Option A: Local CPU Processing (Limited)**
 ```bash
-# Run overnight - downloads ~28GB DFloat11 compressed model
+# Download compressed model (~28GB) - requires 32GB+ RAM
 ./monitor-dfloat11-download.sh
 ```
+
+**Option B: Remote GPU Server (Recommended)**
+```bash
+# Configure remote RTX 4090 server for optimal performance
+./configure-remote-ai.sh
+```
+See **[Remote GPU Setup Guide](docs/REMOTE_GPU_SETUP.md)** for detailed instructions.
 
 ## 🎯 Usage
 

@@ -1,30 +1,59 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:serverpod/serverpod.dart';
 
-/// Service for communicating with the Qwen Image Edit Docker container
+/// Service for communicating with the Qwen Image Edit service (local or remote)
 class QwenImageService {
-  static const String _defaultBaseUrl = 'http://qwen-image-edit:8000';
+  static const String _defaultBaseUrl = 'http://localhost:8000';
   static const Duration _defaultTimeout = Duration(seconds: 300);
-  static const int _maxRetries = 3;
+  static const int _defaultMaxRetries = 3;
 
   final String baseUrl;
   final Duration timeout;
+  final int maxRetries;
+  final String healthCheckPath;
   final http.Client _httpClient;
 
   QwenImageService({
     String? baseUrl,
     Duration? timeout,
+    int? maxRetries,
+    String? healthCheckPath,
   })  : baseUrl = baseUrl ?? _defaultBaseUrl,
         timeout = timeout ?? _defaultTimeout,
+        maxRetries = maxRetries ?? _defaultMaxRetries,
+        healthCheckPath = healthCheckPath ?? '/health',
         _httpClient = http.Client();
+
+  /// Factory constructor that creates service from environment variables and defaults
+  factory QwenImageService.fromConfig(Session session) {
+    // Get AI service configuration from environment variables with sensible defaults
+    final host = Platform.environment['AI_SERVICE_HOST'] ?? 'localhost';
+    final port = int.tryParse(Platform.environment['AI_SERVICE_PORT'] ?? '') ?? 8000;
+    final scheme = Platform.environment['AI_SERVICE_SCHEME'] ?? 'http';
+    final timeoutMs = int.tryParse(Platform.environment['AI_SERVICE_TIMEOUT'] ?? '') ?? 30000;
+    final retries = int.tryParse(Platform.environment['AI_SERVICE_MAX_RETRIES'] ?? '') ?? 3;
+    final healthPath = Platform.environment['AI_SERVICE_HEALTH_PATH'] ?? '/health';
+    
+    final baseUrl = '$scheme://$host:$port';
+    
+    session.log('Configuring AI service: $baseUrl (timeout: ${timeoutMs}ms, retries: $retries)', level: LogLevel.info);
+    
+    return QwenImageService(
+      baseUrl: baseUrl,
+      timeout: Duration(milliseconds: timeoutMs),
+      maxRetries: retries,
+      healthCheckPath: healthPath,
+    );
+  }
 
   /// Check if the Qwen Image Edit service is healthy and ready
   Future<bool> isHealthy() async {
     try {
       final response = await _httpClient
           .get(
-            Uri.parse('$baseUrl/health'),
+            Uri.parse('$baseUrl$healthCheckPath'),
             headers: {'Content-Type': 'application/json'},
           )
           .timeout(const Duration(seconds: 10));
@@ -69,7 +98,7 @@ class QwenImageService {
     int retries = 0;
     Exception? lastException;
 
-    while (retries < _maxRetries) {
+    while (retries < maxRetries) {
       try {
         final requestBody = {
           'image_base64': imageBase64,
@@ -108,7 +137,7 @@ class QwenImageService {
         lastException = e is Exception ? e : Exception(e.toString());
         retries++;
 
-        if (retries < _maxRetries) {
+        if (retries < maxRetries) {
           // Wait before retrying with exponential backoff
           await Future.delayed(Duration(seconds: retries * 2));
         }
@@ -116,7 +145,7 @@ class QwenImageService {
     }
 
     throw QwenImageServiceException(
-      'Failed to process image after $_maxRetries retries: ${lastException?.toString()}',
+      'Failed to process image after $maxRetries retries: ${lastException?.toString()}',
     );
   }
 

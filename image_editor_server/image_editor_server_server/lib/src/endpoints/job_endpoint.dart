@@ -5,13 +5,11 @@ import '../services/job_processing_service.dart';
 
 /// Endpoint for managing image processing jobs
 class JobEndpoint extends Endpoint {
-  late final JobProcessingService _jobProcessingService;
 
-  @override
-  void initialize(Server server, String name, String? moduleName) {
-    super.initialize(server, name, moduleName);
-    final qwenImageService = QwenImageService();
-    _jobProcessingService = JobProcessingService(qwenImageService);
+  /// Get JobProcessingService with session configuration
+  JobProcessingService _getJobProcessingService(Session session) {
+    final qwenImageService = QwenImageService.fromConfig(session);
+    return JobProcessingService(qwenImageService);
   }
 
   /// Create a new image processing job
@@ -31,7 +29,8 @@ class JobEndpoint extends Endpoint {
       }
 
       // Create the job
-      final job = await _jobProcessingService.createJob(
+      final jobService = _getJobProcessingService(session);
+      final job = await jobService.createJob(
         session: session,
         imageId: imageId,
         processorType: processorType,
@@ -65,7 +64,8 @@ class JobEndpoint extends Endpoint {
   /// Get job status
   Future<JobStatusResponse?> getJobStatus(Session session, int jobId) async {
     session.log('Getting status for job $jobId');
-    return await _jobProcessingService.getJobStatus(session, jobId);
+    final jobService = _getJobProcessingService(session);
+    return await jobService.getJobStatus(session, jobId);
   }
 
   /// Get job result (processed image data)
@@ -132,7 +132,8 @@ class JobEndpoint extends Endpoint {
   /// List user's jobs (for now, all jobs)
   Future<List<ProcessingJob>> listJobs(Session session, {int limit = 50}) async {
     session.log('Listing jobs (limit: $limit)');
-    return await _jobProcessingService.getAllJobs(session, limit: limit);
+    final jobService = _getJobProcessingService(session);
+    return await jobService.getAllJobs(session, limit: limit);
   }
 
   /// Get processing statistics
@@ -147,7 +148,8 @@ class JobEndpoint extends Endpoint {
         stats[job.status] = (stats[job.status] ?? 0) + 1;
       }
 
-      final pendingCount = await _jobProcessingService.getPendingJobsCount(session);
+      final jobService = _getJobProcessingService(session);
+      final pendingCount = await jobService.getPendingJobsCount(session);
       
       return {
         'total_jobs': allJobs.length,
