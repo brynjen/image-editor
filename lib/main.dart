@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:window_manager/window_manager.dart';
 
 import 'presentation/navigation/app_router.dart';
@@ -31,12 +32,23 @@ void main() async {
     await windowManager.maximize();
   });
 
-  // Create Serverpod client and repository
-  final client = ServerpodClientConfig.createClient();
+  // Load server configuration from SharedPreferences
+  final prefs = await SharedPreferences.getInstance();
+  final serverHost = prefs.getString('ai_service_host') ?? '127.0.0.1';
+  final serverPort = prefs.getInt('ai_service_port') ?? 8080;
+  final serverScheme = prefs.getString('ai_service_scheme') ?? 'http';
+  final useSecure = serverScheme == 'https';
+
+  // Create Serverpod client and repository with saved configuration
+  final client = ServerpodClientConfig.createClient(
+    host: serverHost,
+    port: serverPort,
+    secure: useSecure,
+  );
   final imageRepository = ServerpodImageRepository(client);
   
-  // Create server status service
-  final serverStatusService = ServerStatusService(client, '127.0.0.1', 8080);
+  // Create server status service with saved configuration
+  final serverStatusService = ServerStatusService(client, serverHost, serverPort);
 
   runApp(ImageEditorApp(
     imageRepository: imageRepository,

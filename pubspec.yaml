@@ -21,6 +21,7 @@ dependencies:
   serverpod_client: ^2.9.1
   http: ^1.5.0
   path: ^1.9.0
+  shared_preferences: ^2.3.2
   image_editor_server_client:
     path: ./image_editor_server/image_editor_server_client
 

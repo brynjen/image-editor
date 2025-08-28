@@ -9,6 +9,7 @@ import '../widget/image_drop_box.dart';
 import '../widget/instruction_text_field.dart';
 import '../widget/job_status_widget.dart';
 import '../widget/processor_dropdown.dart';
+import '../widget/server_config_dialog.dart';
 import '../widget/server_status_widget.dart';
 
 /// Main screen for image editing functionality
@@ -76,8 +77,30 @@ class _ImageEditorViewState extends State<_ImageEditorView> {
         appBar: AppBar(
           title: const Text('Image Editor'),
           backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
-          actions: const [
-            Padding(
+          actions: [
+            // Server configuration button
+            IconButton(
+              onPressed: () async {
+                final result = await showDialog<bool>(
+                  context: context,
+                  builder: (context) => const ServerConfigDialog(),
+                );
+                
+                // If settings were saved, you could trigger a refresh here
+                if (result == true && context.mounted) {
+                  // Optionally refresh server status or show confirmation
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Server configuration updated. Restart the app to apply changes.'),
+                      duration: Duration(seconds: 3),
+                    ),
+                  );
+                }
+              },
+              icon: const Icon(Icons.settings),
+              tooltip: 'Configure AI Server',
+            ),
+            const Padding(
               padding: EdgeInsets.only(right: 16.0),
               child: ServerStatusWidget(),
             ),
