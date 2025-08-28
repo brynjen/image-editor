@@ -14,6 +14,7 @@ from PIL import Image
 import io
 import base64
 import requests
+import torch
 
 from model_handler import QwenImageEditHandler
 
@@ -32,11 +33,15 @@ app = FastAPI(
 model_handler: Optional[QwenImageEditHandler] = None
 
 class ProcessRequest(BaseModel):
-    """Request model for image processing."""
+    """Request model for image processing based on HuggingFace DFloat11 example."""
     image_base64: str
     prompt: str
+    negative_prompt: Optional[str] = " "  # Space as recommended in HF docs
+    num_inference_steps: Optional[int] = 50
+    true_cfg_scale: Optional[float] = 4.0
+    seed: Optional[int] = 42
     model: Optional[str] = "qwen-image-edit"
-    options: Optional[dict] = {}
+    cpu_offload_blocks: Optional[int] = 30  # Number of blocks to offload to CPU
 
 class ProcessResponse(BaseModel):
     """Response model for image processing."""
@@ -59,14 +64,23 @@ async def startup_event():
     try:
         logger.info("Starting Qwen Image Edit service...")
         
-        # Get configuration from environment variables
+        # Get configuration from environment variables (following HF DFloat11 example)
         model_name = os.getenv("MODEL_NAME", "Qwen/Qwen-Image-Edit")
         device = os.getenv("DEVICE", "auto")
         cpu_offload = os.getenv("CPU_OFFLOAD", "true").lower() == "true"
+        cpu_offload_blocks = int(os.getenv("CPU_OFFLOAD_BLOCKS", "30"))
+        pin_memory = os.getenv("PIN_MEMORY", "true").lower() == "true"
         
         logger.info(f"Initializing DFloat11 compressed model: {model_name} on {device}")
-        logger.info(f"CPU offloading enabled: {cpu_offload}")
-        model_handler = QwenImageEditHandler(model_name=model_name, device=device, cpu_offload=cpu_offload)
+        logger.info(f"CPU offloading: {cpu_offload} (blocks: {cpu_offload_blocks}, pin_memory: {pin_memory})")
+        
+        model_handler = QwenImageEditHandler(
+            model_name=model_name,
+            device=device,
+            cpu_offload=cpu_offload,
+            cpu_offload_blocks=cpu_offload_blocks,
+            pin_memory=pin_memory
+        )
         
         logger.info("Qwen Image Edit service started successfully")
         
@@ -144,8 +158,15 @@ async def process_image(request: ProcessRequest):
                 detail=f"Invalid image data: {str(e)}"
             )
         
-        # Process the image
-        processed_image = model_handler.process_image(input_image, request.prompt)
+        # Process the image with parameters from HuggingFace DFloat11 example
+        processing_params = {
+            "negative_prompt": request.negative_prompt,
+            "num_inference_steps": request.num_inference_steps,
+            "true_cfg_scale": request.true_cfg_scale,
+            "generator": None if request.seed is None else torch.manual_seed(request.seed),
+        }
+        
+        processed_image = model_handler.process_image(input_image, request.prompt, **processing_params)
         
         # Encode result
         processed_image_base64 = model_handler.encode_image_to_base64(processed_image)

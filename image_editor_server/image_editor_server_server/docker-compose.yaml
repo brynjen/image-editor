@@ -28,6 +28,8 @@ services:
       - MODEL_NAME=Qwen/Qwen-Image-Edit  # Base model (DFloat11 compression applied automatically)
       - DEVICE=cpu  # Use 'cuda' if GPU is available
       - CPU_OFFLOAD=true  # Enable CPU offloading to reduce memory usage
+      - CPU_OFFLOAD_BLOCKS=30  # Number of transformer blocks to offload (30 default)
+      - PIN_MEMORY=true  # Enable memory pinning for faster CPU-GPU transfers
       - MAX_CONCURRENT_REQUESTS=1  # Reduce concurrent requests to save memory
       - HF_HOME=/app/hf_cache  # HuggingFace cache directory
       - TRANSFORMERS_CACHE=/app/hf_cache

@@ -21,19 +21,24 @@ logger = logging.getLogger(__name__)
 class QwenImageEditHandler:
     """Handler for DFloat11 compressed Qwen image editing model operations."""
     
-    def __init__(self, model_name: str = "Qwen/Qwen-Image-Edit", device: str = "auto", cpu_offload: bool = True):
+    def __init__(self, model_name: str = "Qwen/Qwen-Image-Edit", device: str = "auto", cpu_offload: bool = True, cpu_offload_blocks: int = 30, pin_memory: bool = True):
         """
         Initialize the DFloat11 compressed Qwen image edit handler.
+        Based on HuggingFace DFloat11/Qwen-Image-Edit-DF11 implementation.
         
         Args:
             model_name: Base HuggingFace model identifier (always Qwen/Qwen-Image-Edit)
             device: Device to run inference on ('cpu', 'cuda', or 'auto')
             cpu_offload: Enable CPU offloading to reduce GPU memory usage
+            cpu_offload_blocks: Number of transformer blocks to offload to CPU (30 default)
+            pin_memory: Enable memory pinning for faster CPU-GPU transfers
         """
         self.model_name = model_name
         self.dfloat11_model_name = "DFloat11/Qwen-Image-Edit-DF11"
         self.device = self._get_device(device)
         self.cpu_offload = cpu_offload
+        self.cpu_offload_blocks = cpu_offload_blocks if cpu_offload else 0
+        self.pin_memory = pin_memory
         self.pipeline = None
         self._load_model()
     
@@ -62,12 +67,13 @@ class QwenImageEditHandler:
             logger.info("Transformer config loaded, loading DFloat11 compressed weights...")
             
             # Step 2: Load DFloat11 compressed weights into the transformer
+            # Following the exact HuggingFace DFloat11 example implementation
             DFloat11Model.from_pretrained(
                 self.dfloat11_model_name,
-                device="cpu",  # Always load to CPU first
+                device="cpu",  # Always load to CPU first as per HF docs
                 cpu_offload=self.cpu_offload,
-                cpu_offload_blocks=30 if self.cpu_offload else 0,
-                pin_memory=True,
+                cpu_offload_blocks=self.cpu_offload_blocks,
+                pin_memory=self.pin_memory,
                 bfloat16_model=transformer,
             )
             
@@ -118,16 +124,20 @@ class QwenImageEditHandler:
             if image.mode != 'RGB':
                 image = image.convert('RGB')
             
-            # Default parameters optimized for DFloat11 model
+            # Default parameters from HuggingFace DFloat11 example
             default_params = {
                 "generator": torch.manual_seed(42),  # Fixed seed for reproducibility
                 "true_cfg_scale": 4.0,
-                "negative_prompt": " ",  # Space as recommended in docs
+                "negative_prompt": " ",  # Space as recommended in HF docs
                 "num_inference_steps": 50,
             }
             
-            # Merge with any provided kwargs
-            default_params.update(kwargs)
+            # Merge with any provided kwargs, but handle generator specially
+            for key, value in kwargs.items():
+                if key == "generator" and value is not None:
+                    default_params[key] = value
+                elif key != "generator":
+                    default_params[key] = value
             
             # Prepare inputs for the diffusion pipeline
             inputs = {

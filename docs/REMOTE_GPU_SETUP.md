@@ -2,6 +2,8 @@
 
 Guide for setting up the DFloat11 Qwen-Image-Edit model on a remote GPU server (RTX 4090) for use with the Image Editor project.
 
+**📖 Based on:** [HuggingFace DFloat11/Qwen-Image-Edit-DF11](https://huggingface.co/DFloat11/Qwen-Image-Edit-DF11)
+
 ## 🎯 Overview
 
 This setup allows you to:
