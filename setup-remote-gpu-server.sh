@@ -138,16 +138,76 @@ else
 fi
 
 # Install NVIDIA Container Toolkit
-if ! command -v nvidia-container-runtime &> /dev/null; then
-    echo "🔧 Installing NVIDIA Container Toolkit..."
+echo "🔍 Checking NVIDIA Container Toolkit..."
+if ! command -v nvidia-container-runtime &> /dev/null && ! command -v nvidia-ctk &> /dev/null; then
+    echo "🔧 Installing NVIDIA Container Toolkit (using current method)..."
+    
+    # Get distribution info
     distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
-    curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add -
-    curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list
-    sudo apt-get update && sudo apt-get install -y nvidia-container-toolkit
-    sudo systemctl restart docker
-    echo "✅ NVIDIA Container Toolkit installed"
+    echo "📋 Detected distribution: $distribution"
+    
+    # Use the new repository setup method (apt-key is deprecated)
+    curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg
+    curl -s -L https://nvidia.github.io/libnvidia-container/$distribution/libnvidia-container.list | \
+        sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | \
+        sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
+    
+    # Update package list
+    echo "📦 Updating package lists..."
+    sudo apt-get update
+    
+    # Try to install nvidia-container-toolkit
+    if sudo apt-get install -y nvidia-container-toolkit; then
+        echo "✅ NVIDIA Container Toolkit installed successfully"
+        
+        # Configure Docker to use the toolkit
+        echo "🔧 Configuring Docker to use NVIDIA Container Toolkit..."
+        sudo nvidia-ctk runtime configure --runtime=docker
+        sudo systemctl restart docker
+        echo "✅ Docker configured for NVIDIA GPU support"
+        
+        # Verify installation
+        if $DOCKER_CMD run --rm --gpus all nvidia/cuda:12.0-base-ubuntu20.04 nvidia-smi &> /dev/null; then
+            echo "✅ GPU support in Docker verified"
+        else
+            echo "⚠️  GPU support installed but test failed. This might be normal if no CUDA image is available."
+        fi
+    else
+        echo "❌ Failed to install nvidia-container-toolkit from repository"
+        echo "🔄 Trying alternative installation method..."
+        
+        # Fallback: try installing nvidia-docker2 (older method)
+        if sudo apt-get install -y nvidia-docker2; then
+            echo "✅ Installed nvidia-docker2 (legacy support)"
+            sudo systemctl restart docker
+        else
+            echo "❌ All NVIDIA Container Toolkit installation methods failed"
+            echo "💡 Manual installation may be required. Please check:"
+            echo "   - NVIDIA drivers are properly installed"
+            echo "   - Repository is accessible: https://nvidia.github.io/libnvidia-container/"
+            echo "   - Distribution '$distribution' is supported"
+            echo ""
+            echo "🔧 You can try manual installation:"
+            echo "   curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg"
+            echo "   echo 'deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://nvidia.github.io/libnvidia-container/stable/deb/\$(ARCH) /' | sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list"
+            echo "   sudo apt-get update && sudo apt-get install -y nvidia-container-toolkit"
+            exit 1
+        fi
+    fi
 else
     echo "✅ NVIDIA Container Toolkit already installed"
+    # Verify it's configured with Docker
+    if $DOCKER_CMD info 2>/dev/null | grep -q nvidia; then
+        echo "✅ Docker is configured for NVIDIA GPU support"
+    else
+        echo "⚠️  NVIDIA Container Toolkit found but Docker may not be configured"
+        echo "🔧 Configuring Docker..."
+        if command -v nvidia-ctk &> /dev/null; then
+            sudo nvidia-ctk runtime configure --runtime=docker
+            sudo systemctl restart docker
+            echo "✅ Docker reconfigured for NVIDIA GPU support"
+        fi
+    fi
 fi
 
 # Create project directory
