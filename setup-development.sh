@@ -34,9 +34,75 @@ echo "🔍 Checking prerequisites..."
 
 # Check Flutter
 if ! command -v flutter &> /dev/null; then
-    echo "❌ Flutter not found. Please install Flutter SDK first:"
-    echo "   https://docs.flutter.dev/get-started/install"
-    exit 1
+    echo "❌ Flutter not found. Installing Flutter SDK..."
+    
+    # Detect OS
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+        # macOS
+        echo "🍎 Detected macOS - installing Flutter via Homebrew..."
+        if ! command -v brew &> /dev/null; then
+            echo "📦 Installing Homebrew first..."
+            /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+            # Add Homebrew to PATH for current session
+            if [[ -f "/opt/homebrew/bin/brew" ]]; then
+                export PATH="/opt/homebrew/bin:$PATH"
+            elif [[ -f "/usr/local/bin/brew" ]]; then
+                export PATH="/usr/local/bin:$PATH"
+            fi
+        fi
+        
+        if brew install --cask flutter; then
+            echo "✅ Flutter installed via Homebrew"
+            # Add Flutter to PATH
+            export PATH="$(brew --prefix)/bin:$PATH"
+        else
+            echo "❌ Failed to install Flutter via Homebrew"
+            echo "💡 Please install manually: https://docs.flutter.dev/get-started/install/macos"
+            exit 1
+        fi
+        
+    elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
+        # Linux
+        echo "🐧 Detected Linux - installing Flutter SDK..."
+        FLUTTER_VERSION="3.16.0"
+        cd /tmp
+        
+        if wget "https://storage.googleapis.com/flutter_infra_release/releases/stable/linux/flutter_linux_${FLUTTER_VERSION}-stable.tar.xz"; then
+            tar xf "flutter_linux_${FLUTTER_VERSION}-stable.tar.xz"
+            sudo mv flutter /opt/
+            
+            # Add to PATH permanently
+            echo 'export PATH="/opt/flutter/bin:$PATH"' >> ~/.bashrc
+            echo 'export PATH="/opt/flutter/bin:$PATH"' >> ~/.profile
+            
+            # Add to PATH for current session
+            export PATH="/opt/flutter/bin:$PATH"
+            
+            echo "✅ Flutter installed to /opt/flutter"
+            echo "💡 Added to PATH in ~/.bashrc and ~/.profile"
+        else
+            echo "❌ Failed to download Flutter"
+            echo "💡 Please install manually: https://docs.flutter.dev/get-started/install/linux"
+            exit 1
+        fi
+        
+        cd - > /dev/null
+        
+    else
+        echo "❌ Unsupported OS: $OSTYPE"
+        echo "💡 Please install Flutter manually: https://docs.flutter.dev/get-started/install"
+        exit 1
+    fi
+    
+    # Verify installation
+    if command -v flutter &> /dev/null; then
+        FLUTTER_VERSION=$(flutter --version | head -n1 | cut -d' ' -f2)
+        echo "✅ Flutter installation verified: $FLUTTER_VERSION"
+    else
+        echo "❌ Flutter installation failed - command not found after install"
+        echo "💡 You may need to restart your terminal or run: source ~/.bashrc"
+        exit 1
+    fi
 else
     FLUTTER_VERSION=$(flutter --version | head -n1 | cut -d' ' -f2)
     echo "✅ Flutter found: $FLUTTER_VERSION"
