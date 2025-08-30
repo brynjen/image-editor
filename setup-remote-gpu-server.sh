@@ -19,7 +19,7 @@ cleanup() {
 }
 
 # Trap signals for graceful shutdown
-trap cleanup SIGINT SIGTERM
+trap cleanup INT TERM
 
 echo "🚀 Setting up Remote GPU Server for Qwen Image Edit (DFloat11)"
 echo "============================================================="
