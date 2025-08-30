@@ -56,15 +56,35 @@ else
 fi
 
 # Install Docker if not present
+echo "🔍 Checking Docker installation..."
 if ! command -v docker &> /dev/null; then
-    echo "📦 Installing Docker..."
+    echo "📦 Docker not found. Installing Docker..."
     curl -fsSL https://get.docker.com -o get-docker.sh
     sudo sh get-docker.sh
     sudo usermod -aG docker $USER
     rm get-docker.sh
-    echo "✅ Docker installed"
+    echo "✅ Docker installed successfully"
+    echo "⚠️  You may need to log out and back in for Docker group membership to take effect"
 else
-    echo "✅ Docker already installed"
+    echo "✅ Docker command found"
+    # Check if Docker daemon is running
+    if sudo docker info &> /dev/null; then
+        echo "✅ Docker daemon is running"
+        DOCKER_VERSION=$(docker --version 2>/dev/null || echo "unknown")
+        echo "📋 Docker version: $DOCKER_VERSION"
+    else
+        echo "⚠️  Docker is installed but daemon is not running"
+        echo "🔧 Starting Docker daemon..."
+        sudo systemctl start docker
+        sudo systemctl enable docker
+        if sudo docker info &> /dev/null; then
+            echo "✅ Docker daemon started successfully"
+        else
+            echo "❌ Failed to start Docker daemon. Please check manually:"
+            echo "   sudo systemctl status docker"
+            exit 1
+        fi
+    fi
 fi
 
 # Install NVIDIA Container Toolkit
