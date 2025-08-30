@@ -6,6 +6,21 @@
 
 set -e
 
+# Add signal handling for graceful interruption
+cleanup() {
+    echo ""
+    echo "🛑 Script interrupted. Cleaning up..."
+    # Kill any background processes
+    jobs -p | xargs -r kill 2>/dev/null || true
+    # Remove temporary files
+    rm -f /tmp/nvidia-gpgkey 2>/dev/null || true
+    echo "🧹 Cleanup completed"
+    exit 130
+}
+
+# Trap signals for graceful shutdown
+trap cleanup SIGINT SIGTERM
+
 echo "🚀 Setting up Remote GPU Server for Qwen Image Edit (DFloat11)"
 echo "============================================================="
 echo "📖 Based on: https://huggingface.co/DFloat11/Qwen-Image-Edit-DF11"
@@ -218,80 +233,87 @@ cd "$PROJECT_DIR"
 echo "📁 Working in: $PROJECT_DIR"
 
 # Download model using the HuggingFace DFloat11 approach
-echo "📥 Downloading DFloat11 model (following HuggingFace example)..."
-if [ ! -d "qwen-models-cache" ] || [ -z "$(ls -A qwen-models-cache)" ]; then
-    echo "🐍 Setting up Python environment..."
-    python3 -m venv venv
-    source venv/bin/activate
-    
-    # Install exact dependencies from HuggingFace example
-    pip install -U "dfloat11[cuda12]"  # CUDA 12 support for RTX 4090
-    pip install "git+https://github.com/huggingface/diffusers"
-    pip install huggingface_hub torch transformers
-    
-    # Create download script based on HF example
-    cat > download_dfloat11_models.py << 'EOF'
-"""
-Download script for DFloat11 Qwen-Image-Edit model.
-Based on HuggingFace DFloat11/Qwen-Image-Edit-DF11 example.
-"""
-
-import os
-import logging
-from huggingface_hub import snapshot_download
-
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
-
-def download_models():
-    """Download both base and DFloat11 compressed models."""
-    cache_dir = "./qwen-models-cache"
-    os.makedirs(cache_dir, exist_ok=True)
-    
-    logger.info("🤖 DFloat11 Model Downloader for Remote GPU Server")
-    logger.info("=======================================================")
-    
-    # Download base Qwen-Image-Edit model (required for config)
-    logger.info("📦 Downloading base Qwen-Image-Edit model...")
-    base_path = snapshot_download(
-        repo_id="Qwen/Qwen-Image-Edit",
-        cache_dir=cache_dir,
-        resume_download=True
-    )
-    logger.info(f"✅ Base model downloaded to: {base_path}")
-    
-    # Download DFloat11 compressed weights
-    logger.info("🗜️  Downloading DFloat11 compressed weights...")
-    dfloat11_path = snapshot_download(
-        repo_id="DFloat11/Qwen-Image-Edit-DF11",
-        cache_dir=cache_dir,
-        resume_download=True
-    )
-    logger.info(f"✅ DFloat11 model downloaded to: {dfloat11_path}")
-    
-    # Calculate total size
-    total_size = sum(
-        os.path.getsize(os.path.join(dirpath, filename))
-        for dirpath, dirnames, filenames in os.walk(cache_dir)
-        for filename in filenames
-    )
-    logger.info(f"💾 Total model size: {total_size / (1024**3):.2f} GB")
-    logger.info("🎉 Model download completed successfully!")
-
-if __name__ == "__main__":
-    try:
-        download_models()
-    except Exception as e:
-        logger.error(f"❌ Download failed: {e}")
-        exit(1)
-EOF
-    
-    echo "⬇️  Starting model download (this may take 30-60 minutes)..."
-    python download_dfloat11_models.py
-    deactivate
-    echo "✅ DFloat11 models downloaded successfully"
+echo "🔍 Checking for existing DFloat11 models..."
+if [ ! -d "qwen-models-cache" ]; then
+    echo "📁 Creating qwen-models-cache directory..."
+    mkdir -p qwen-models-cache
+    NEED_DOWNLOAD=true
+elif [ -z "$(ls -A qwen-models-cache 2>/dev/null)" ]; then
+    echo "📁 qwen-models-cache directory is empty"
+    NEED_DOWNLOAD=true
 else
-    echo "✅ Models already present"
+    # Check if we have the required model files
+    echo "🔍 Checking existing model files..."
+    QWEN_BASE_EXISTS=false
+    DFLOAT11_EXISTS=false
+    
+    # Look for Qwen base model indicators
+    if find qwen-models-cache -name "*Qwen*Image*Edit*" -type d | head -1 | grep -q .; then
+        QWEN_BASE_EXISTS=true
+        echo "✅ Found Qwen-Image-Edit base model"
+    fi
+    
+    # Look for DFloat11 compressed model indicators  
+    if find qwen-models-cache -name "*DFloat11*" -type d | head -1 | grep -q . || \
+       find qwen-models-cache -name "*.dfloat11" -type f | head -1 | grep -q .; then
+        DFLOAT11_EXISTS=true
+        echo "✅ Found DFloat11 compressed model"
+    fi
+    
+    # Calculate total cache size
+    CACHE_SIZE=$(du -sh qwen-models-cache 2>/dev/null | cut -f1 || echo "unknown")
+    echo "📊 Model cache size: $CACHE_SIZE"
+    
+    if [ "$QWEN_BASE_EXISTS" = true ] && [ "$DFLOAT11_EXISTS" = true ]; then
+        echo "✅ Both required models found in cache - skipping download"
+        NEED_DOWNLOAD=false
+    else
+        echo "⚠️  Incomplete model cache detected"
+        if [ "$QWEN_BASE_EXISTS" = false ]; then
+            echo "   - Missing: Qwen-Image-Edit base model"
+        fi
+        if [ "$DFLOAT11_EXISTS" = false ]; then
+            echo "   - Missing: DFloat11 compressed model"
+        fi
+        echo "🔄 Will download missing models..."
+        NEED_DOWNLOAD=true
+    fi
+fi
+
+if [ "$NEED_DOWNLOAD" = true ]; then
+    echo ""
+    echo "❌ Required DFloat11 models not found!"
+    echo "============================================"
+    echo ""
+    echo "📋 Missing models:"
+    if [ "$QWEN_BASE_EXISTS" = false ]; then
+        echo "   • Qwen-Image-Edit base model"
+    fi
+    if [ "$DFLOAT11_EXISTS" = false ]; then
+        echo "   • DFloat11 compressed model"
+    fi
+    echo ""
+    echo "📥 To download the required models (~28GB), please run:"
+    echo ""
+    echo "   python3 download-dfloat11-simple.py"
+    echo ""
+    echo "💡 This dedicated download script provides:"
+    echo "   • Better progress reporting and logging"
+    echo "   • Resumable downloads if interrupted"
+    echo "   • Disk space validation"
+    echo "   • Proper error handling and recovery"
+    echo ""
+    echo "⏱️  Expected download time: 30-60 minutes (depending on connection)"
+    echo "💾 Required disk space: ~35GB free"
+    echo ""
+    echo "🔄 After download completes, re-run this setup script:"
+    echo "   ./setup-remote-gpu-server.sh"
+    echo ""
+    echo "🛑 Setup script stopped - please download models first."
+    exit 1
+else
+    echo "✅ All required models found in cache"
+    echo "📊 Model cache size: $CACHE_SIZE"
 fi
 
 # Create optimized Docker Compose for RTX 4090
