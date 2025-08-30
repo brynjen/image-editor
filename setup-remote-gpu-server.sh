@@ -57,34 +57,84 @@ fi
 
 # Install Docker if not present
 echo "🔍 Checking Docker installation..."
-if ! command -v docker &> /dev/null; then
-    echo "📦 Docker not found. Installing Docker..."
+echo "PATH: $PATH"
+echo "Trying to locate docker command..."
+
+# Try multiple ways to find docker
+DOCKER_CMD=""
+if command -v docker &> /dev/null; then
+    DOCKER_CMD="docker"
+    echo "✅ Found docker via 'command -v'"
+elif [ -x "/usr/bin/docker" ]; then
+    DOCKER_CMD="/usr/bin/docker"
+    echo "✅ Found docker at /usr/bin/docker"
+elif [ -x "/usr/local/bin/docker" ]; then
+    DOCKER_CMD="/usr/local/bin/docker"
+    echo "✅ Found docker at /usr/local/bin/docker"
+elif [ -x "/snap/bin/docker" ]; then
+    DOCKER_CMD="/snap/bin/docker"
+    echo "✅ Found docker at /snap/bin/docker (snap installation)"
+else
+    echo "❌ Docker not found in any common locations"
+    echo "🔍 Searched locations:"
+    echo "  - PATH directories: $(echo $PATH | tr ':' '\n' | head -5)"
+    echo "  - /usr/bin/docker"
+    echo "  - /usr/local/bin/docker"
+    echo "  - /snap/bin/docker"
+    echo ""
+    echo "📦 Installing Docker..."
+    
+    # Check if we're being run with sudo (which can cause issues)
+    if [ "$EUID" -eq 0 ]; then
+        echo "⚠️  Running as root. Docker installation may have permission issues."
+        echo "💡 Consider running this script as a regular user with sudo privileges."
+    fi
+    
     curl -fsSL https://get.docker.com -o get-docker.sh
     sudo sh get-docker.sh
     sudo usermod -aG docker $USER
     rm get-docker.sh
     echo "✅ Docker installed successfully"
     echo "⚠️  You may need to log out and back in for Docker group membership to take effect"
-else
-    echo "✅ Docker command found"
+    
+    # Try to find docker again after installation
+    if command -v docker &> /dev/null; then
+        DOCKER_CMD="docker"
+    elif [ -x "/usr/bin/docker" ]; then
+        DOCKER_CMD="/usr/bin/docker"
+    else
+        echo "❌ Docker installation may have failed. Please check manually."
+        exit 1
+    fi
+fi
+
+# Now test Docker functionality
+echo "🔧 Testing Docker functionality..."
+if $DOCKER_CMD --version &> /dev/null; then
+    DOCKER_VERSION=$($DOCKER_CMD --version 2>/dev/null || echo "unknown")
+    echo "📋 Docker version: $DOCKER_VERSION"
+    
     # Check if Docker daemon is running
-    if sudo docker info &> /dev/null; then
+    if sudo $DOCKER_CMD info &> /dev/null; then
         echo "✅ Docker daemon is running"
-        DOCKER_VERSION=$(docker --version 2>/dev/null || echo "unknown")
-        echo "📋 Docker version: $DOCKER_VERSION"
     else
         echo "⚠️  Docker is installed but daemon is not running"
         echo "🔧 Starting Docker daemon..."
         sudo systemctl start docker
         sudo systemctl enable docker
-        if sudo docker info &> /dev/null; then
+        sleep 2  # Give daemon time to start
+        if sudo $DOCKER_CMD info &> /dev/null; then
             echo "✅ Docker daemon started successfully"
         else
             echo "❌ Failed to start Docker daemon. Please check manually:"
             echo "   sudo systemctl status docker"
+            echo "   sudo journalctl -u docker.service"
             exit 1
         fi
     fi
+else
+    echo "❌ Docker command found but not functional"
+    exit 1
 fi
 
 # Install NVIDIA Container Toolkit
