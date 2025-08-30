@@ -11,16 +11,39 @@ echo "============================================================="
 echo "📖 Based on: https://huggingface.co/DFloat11/Qwen-Image-Edit-DF11"
 
 # Check if running on Ubuntu with GPU
-if ! command -v nvidia-smi &> /dev/null; then
-    echo "❌ NVIDIA GPU not detected. This script is for GPU servers."
+echo "🔍 Checking for NVIDIA GPU and nvidia-smi command..."
+echo "PATH: $PATH"
+echo "Trying to locate nvidia-smi..."
+
+# Try multiple ways to find nvidia-smi
+NVIDIA_SMI=""
+if command -v nvidia-smi &> /dev/null; then
+    NVIDIA_SMI="nvidia-smi"
+    echo "✅ Found nvidia-smi via 'command -v'"
+elif [ -x "/usr/bin/nvidia-smi" ]; then
+    NVIDIA_SMI="/usr/bin/nvidia-smi"
+    echo "✅ Found nvidia-smi at /usr/bin/nvidia-smi"
+elif [ -x "/usr/local/cuda/bin/nvidia-smi" ]; then
+    NVIDIA_SMI="/usr/local/cuda/bin/nvidia-smi"
+    echo "✅ Found nvidia-smi at /usr/local/cuda/bin/nvidia-smi"
+else
+    echo "❌ NVIDIA GPU driver/nvidia-smi not found. This script is for GPU servers."
+    echo "🔍 Searched locations:"
+    echo "  - PATH directories: $(echo $PATH | tr ':' '\n' | head -5)"
+    echo "  - /usr/bin/nvidia-smi"
+    echo "  - /usr/local/cuda/bin/nvidia-smi"
+    echo ""
+    echo "💡 Please ensure NVIDIA drivers are installed:"
+    echo "   sudo apt update && sudo apt install nvidia-driver-535"
+    echo "   # or appropriate driver version for your GPU"
     exit 1
 fi
 
 echo "✅ GPU detected:"
-nvidia-smi --query-gpu=name,memory.total --format=csv,noheader,nounits
+$NVIDIA_SMI --query-gpu=name,memory.total --format=csv,noheader,nounits
 
 # Check GPU memory requirements
-GPU_MEMORY=$(nvidia-smi --query-gpu=memory.total --format=csv,noheader,nounits | head -n1)
+GPU_MEMORY=$($NVIDIA_SMI --query-gpu=memory.total --format=csv,noheader,nounits | head -n1)
 if [ "$GPU_MEMORY" -lt 24000 ]; then
     echo "⚠️  Warning: GPU has ${GPU_MEMORY}MB memory. DFloat11 model recommends 24GB+ for optimal performance."
     echo "🔧 Will enable CPU offloading to reduce GPU memory usage."
