@@ -22,6 +22,7 @@ dependencies:
   http: ^1.5.0
   path: ^1.9.0
   shared_preferences: ^2.3.2
+  provider: ^6.1.2
   image_editor_server_client:
     path: ./image_editor_server/image_editor_server_client
 
