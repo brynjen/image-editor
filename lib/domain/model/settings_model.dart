@@ -89,7 +89,7 @@ class ServerSettings extends Equatable {
 
   factory ServerSettings.initial() {
     return const ServerSettings(
-      host: 'localhost',
+      host: '192.168.0.74',
       port: 8000,
       scheme: 'http',
       isConnected: false,

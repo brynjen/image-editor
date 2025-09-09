@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  qwen-image-edit-gpu:
+    build: ./qwen-image-edit
+    ports:
+      - "8000:8000"
+    environment:
+      - MODEL_NAME=Qwen/Qwen-Image-Edit
+      - DEVICE=cuda
+      - CPU_OFFLOAD=true
+      - CPU_OFFLOAD_BLOCKS=30
+      - PIN_MEMORY=true
+      - MAX_CONCURRENT_REQUESTS=2
+      - HF_HOME=/app/hf_cache
+      - TRANSFORMERS_CACHE=/app/hf_cache
+      - HF_DATASETS_CACHE=/app/hf_cache
+      - HF_HUB_OFFLINE=1
+      - TRANSFORMERS_OFFLINE=1
+    volumes:
+      - ./qwen-models-cache:/app/hf_cache
+      - qwen_app_cache:/app/cache
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 600s  # 10 minutes for model loading
+    restart: unless-stopped
+
+volumes:
+  qwen_app_cache:

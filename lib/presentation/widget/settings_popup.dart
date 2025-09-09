@@ -41,9 +41,14 @@ class _SettingsPopupViewState extends State<_SettingsPopupView> {
   }
 
   void _updateControllers(ServerSettings settings) {
+    // Update text without triggering full text selection
     _hostController.text = settings.host;
     _portController.text = settings.port.toString();
     _selectedScheme = settings.scheme;
+    
+    // Set cursor position to end of text to avoid full selection
+    _hostController.selection = TextSelection.collapsed(offset: _hostController.text.length);
+    _portController.selection = TextSelection.collapsed(offset: _portController.text.length);
   }
 
   void _onSettingsChanged() {

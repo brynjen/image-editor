@@ -17,7 +17,7 @@ class AppConfigService extends ChangeNotifier {
   ServerpodImageRepository? _imageRepository;
   ServerStatusService? _serverStatusService;
 
-  String _host = 'localhost';
+  String _host = '192.168.0.74';
   int _port = 8080;
   String _scheme = 'http';
 
@@ -73,7 +73,7 @@ class AppConfigService extends ChangeNotifier {
   Future<void> _loadConfiguration() async {
     final prefs = await SharedPreferences.getInstance();
     
-    _host = prefs.getString('ai_service_host') ?? 'localhost';
+    _host = prefs.getString('ai_service_host') ?? '192.168.0.74';
     _port = prefs.getInt('ai_service_port') ?? 8080;
     _scheme = prefs.getString('ai_service_scheme') ?? 'http';
   }

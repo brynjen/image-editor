@@ -54,17 +54,25 @@ class _ServerConfigDialogViewState extends State<_ServerConfigDialogView> {
       final prefs = await SharedPreferences.getInstance();
       
       setState(() {
-        _hostController.text = prefs.getString('ai_service_host') ?? 'localhost';
+        _hostController.text = prefs.getString('ai_service_host') ?? '192.168.0.74';
         _portController.text = prefs.getInt('ai_service_port')?.toString() ?? '8000';
         _selectedScheme = prefs.getString('ai_service_scheme') ?? 'http';
         _isLoading = false;
+        
+        // Set cursor position to end to avoid full text selection
+        _hostController.selection = TextSelection.collapsed(offset: _hostController.text.length);
+        _portController.selection = TextSelection.collapsed(offset: _portController.text.length);
       });
     } catch (e) {
       setState(() {
-        _hostController.text = 'localhost';
+        _hostController.text = '192.168.0.74';
         _portController.text = '8000';
         _selectedScheme = 'http';
         _isLoading = false;
+        
+        // Set cursor position to end to avoid full text selection
+        _hostController.selection = TextSelection.collapsed(offset: _hostController.text.length);
+        _portController.selection = TextSelection.collapsed(offset: _portController.text.length);
       });
     }
   }
